@@ -63,7 +63,6 @@ wss.on('connection', (ws) => {
     })
   mh.sendUserList(ws)
   mh.sendHistory(ws, session)
-  mh.sendStats(ws)
 
   ws.on('close', () => {
     mh.broadcast(p.MESSAGE_USER_LEAVES, {id: me.id})
@@ -233,3 +232,9 @@ wss.on('connection', (ws) => {
     }
   })
 })
+
+setInterval(function stats() {
+  wss.clients.forEach(function each(ws) {
+    mh.sendStats(ws)
+  });
+}, 10000);
