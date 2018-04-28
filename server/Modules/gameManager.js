@@ -37,8 +37,9 @@ export default class GameManager {
    * @returns object
    */
   isValidUsername (newUser) {
+    newUser = newUser.trim()
     // Check if the username is alphanumeric characters only
-    if (!validator.matches(newUser, '([\w\d\s])+')) {
+    if (!validator.matches(newUser, '^(([A-Za-z\\d\\-_])+[ ]?)*[A-Za-z\\d\\-_]+$')) {
       return {
         type: p.MESSAGE_NAME_BAD_CHARACTERS,
         data: null
