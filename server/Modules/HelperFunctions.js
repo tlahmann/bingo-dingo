@@ -157,6 +157,25 @@ export default class HelperFunctions {
     }).reduce((s, b) => s + b, 0)
   }
 
+  static countOneMissing (squares, lines) {
+    return lines.map(line => {
+      const [a, b, c, d, e] = line
+      if (squares[a].isClicked && squares[b].isClicked && squares[c].isClicked && squares[d].isClicked) {
+        return 1
+      } else if (squares[a].isClicked && squares[b].isClicked && squares[c].isClicked && squares[e].isClicked) {
+        return 1
+      } else if (squares[a].isClicked && squares[b].isClicked && squares[d].isClicked && squares[e].isClicked) {
+        return 1
+      } else if (squares[a].isClicked && squares[c].isClicked && squares[d].isClicked && squares[e].isClicked) {
+        return 1
+      } else if (squares[b].isClicked && squares[c].isClicked && squares[d].isClicked && squares[e].isClicked) {
+        return 1
+      } else {
+        return 0
+      }
+    }).reduce((s, b) => s + b, 0)
+  }
+
   static formatDate (date) {
     return dateFormat(date, 'isoDateTime')
   }
