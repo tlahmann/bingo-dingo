@@ -92,7 +92,12 @@ wss.on('connection', (ws) => {
     }
 
     if (decoded.type === p.MESSAGE_CHECK_NICKNAME) {
-      // FIXME: either check if the nickname is valid or remove the functionality
+      let err = gm.isValidUsername(decoded.data.nickname)
+      if (err) {
+        mh.sendPacket(ws, err.type, null)
+        return
+      }
+
       mh.sendPacket(ws, p.MESSAGE_NICKNAME_VALID, null)
     }
 
@@ -139,8 +144,7 @@ wss.on('connection', (ws) => {
 
         mh.sendStats(ws)
       }).catch(function (err) {
-        // here, you'll have Mongoose errors or 'User already exists!' error
-        console.log(err.message)
+        console.log('# %s: A mongo error occured: %s', hf.formatDate(new Date()), err.message)
       })
     }
 

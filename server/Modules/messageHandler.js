@@ -1,6 +1,7 @@
 'use strict'
 
 import p from '../protocol'
+import hf from './HelperFunctions'
 
 export default class MessageHandler {
   constructor (userManager, dataBaser) {
@@ -17,13 +18,13 @@ export default class MessageHandler {
         data: data
       })
     } catch (err) {
-      console.log('Failed to encode packet: ' + err.message)
+      console.log('# %s: Failed to encode packet: %s', hf.formatDate(new Date()), err.message)
     }
 
     try {
       ws.send(output)
     } catch (err) {
-      console.log('Failed to send packet: ' + err.message)
+      console.log('# %s: Failed to send packet: %s', hf.formatDate(new Date()), err.message)
     }
   }
 
