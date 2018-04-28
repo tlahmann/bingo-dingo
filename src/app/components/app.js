@@ -178,12 +178,16 @@ class App extends React.Component {
     }
 
     if (decoded.type === p.MESSAGE_USER_LEAVES) {
-      let index = this.state.userList.findIndex(u => u.nickname === decoded.data.nickname)
-      if (index > -1) {
-        this.state.userList.splice(index, 1)
+      let matches = this.state.userList.filter(
+        u => u.id === decoded.data.id
+      )
+
+      if (matches && matches.length === 1) {
+        this.state.userList.splice(
+          this.state.userList.indexOf(matches[0]),
+          1)
+        this.forceUpdate()
       }
-      this.forceUpdate()
-      return
     }
 
     if (decoded.type === p.MESSAGE_USER_LIST) {

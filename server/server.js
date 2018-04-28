@@ -66,8 +66,9 @@ wss.on('connection', (ws) => {
   mh.sendStats(ws)
 
   ws.on('close', () => {
-    mh.selectiveBroadcast(u => u.client.readyState === WebSocket.OPEN, p.MESSAGE_USER_LEAVES, {nickname: me.nickname})
+    mh.broadcast(p.MESSAGE_USER_LEAVES, {id: me.id})
     gm.removeSocket(ws)
+    return
   })
 
   ws.on('message', (m) => {
