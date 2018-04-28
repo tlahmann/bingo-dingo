@@ -26,15 +26,14 @@ class Stats extends React.Component {
             {this.props.stats.completion}
           </div>
         </div>
-        {/*<div className="row">
+        {<div className="row">
           <div className="eight columns">
             nicht geklickte Felder
           </div>
           <div className="four columns">
-            deactivated
             {this.props.stats.misses}
           </div>
-        </div>*/}
+        </div>}
         <div className="row">
           <div className="eight columns">
             Bingos

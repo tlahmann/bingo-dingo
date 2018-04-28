@@ -224,7 +224,7 @@ class App extends React.Component {
   }
 
   onSocketClose () {
-    this.socket.connect('ws://' + window.location.hostname + ':8021')
+    // this.socket.connect('ws://' + window.location.hostname + ':8021')
     // setTimeout(() => {
     //     // TODO: Limit the amount of retries!
     // TODO: maybe just reconnect instead of reloading
@@ -308,8 +308,9 @@ class App extends React.Component {
             <Tabs>
               <TabList>
                 <Tab>Historie</Tab>
-                <Tab>Spielerliste</Tab>
+                <Tab>Spieler</Tab>
                 <Tab>Statistik</Tab>
+                <Tab>Regeln</Tab>
                 {this.state.isAdmin ? <Tab>Zahlen eingeben</Tab> : []}
                 {/*{this.state.isAdmin ? <Tab>Zurücksetzten</Tab> : []}*/}
               </TabList>
@@ -329,6 +330,24 @@ class App extends React.Component {
                 <Stats
                   stats={this.state.stats}
                 />
+              </TabPanel>
+              <TabPanel>
+                <div id="rules">
+                  Spielregeln
+                  <div className="row">
+                    <div className="twelve columns">
+                      Dabei handelt es sich in der Regel um 75 durchnummerierte Kugeln (1-75).
+                      Bei dem Caller handelt es sich also um den Spielleiter, der dafür verantwortlich ist die Zahlen und zu ziehen, um diese dann anzusagen
+                      Meistens werden 75 Kugeln verwendet
+                      Der Caller sagt die gezogenen Zahlen an
+                      Vollkommen willkürlich erfolgte Ziehung
+                      Der Caller zieht Zahlen und sagt diese laut an
+                      Die Spieler markieren die gezogene Zahl auf der Karte
+                      Gewonnen hat der Spieler, der zuerst ein festgelegtes Muster markiert hat
+                      Die Spielrunde ist beendet und es wird eine neue Karte eingesetzt
+                    </div>
+                  </div>
+                </div>
               </TabPanel>
               {this.state.isAdmin ? <TabPanel>
                   <Input

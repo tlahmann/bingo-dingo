@@ -4,8 +4,8 @@ import p from '../protocol'
 import hf from './HelperFunctions'
 
 export default class MessageHandler {
-  constructor (userManager, dataBaser) {
-    this.um = userManager
+  constructor (gameManager, dataBaser) {
+    this.gm = gameManager
     this.db = dataBaser
   }
 
@@ -29,7 +29,7 @@ export default class MessageHandler {
   }
 
   selectiveBroadcast (fn, type, msg) {
-    this.um.users
+    this.gm.users
       .filter(u => fn(u))
       .map(user => this.sendPacket(user.client, type, msg))
   }
@@ -39,7 +39,7 @@ export default class MessageHandler {
   }
 
   sendUserList (ws) {
-    let output = this.um.users
+    let output = this.gm.users
       .map(u => {
         return {
           id: u.id,
@@ -66,16 +66,16 @@ export default class MessageHandler {
 
   sendStats () {
     let stats = {}
-    stats['completion'] = this.um.users.reduce((s, u) => s + u.board.filter(b => b.isClicked).length, 0)
-    stats['misses'] = this.um.users
+    stats['completion'] = this.gm.users.reduce((s, u) => s + u.board.filter(b => b.isClicked).length, 0)
+    stats['misses'] = this.gm.users
       .reduce((s, u) =>
         s + u.board.filter(f =>
         !f.isClicked &&
-        this.um.numbers.some(n =>
+        this.gm.numbers.some(n =>
           n.number == f.number
         )).length,
         0)
-    stats['bingos'] = this.um.users.reduce((s, u) => s + u.bingos, 0)
+    stats['bingos'] = this.gm.users.reduce((s, u) => s + u.bingos, 0)
     // TODO: get number of plyers that need one, two, three. etc for a bingo
     this.broadcast(p.MESSAGE_STATS, stats)
   }
