@@ -44,7 +44,7 @@ class Stats extends React.Component {
         </div>
         <div className="row">
           <div className="eight columns">
-            Eine Zahl fehlt
+            Reihen in denen eine Zahl fehlt
           </div>
           <div className="four columns">
             {this.props.stats.oneToGo}

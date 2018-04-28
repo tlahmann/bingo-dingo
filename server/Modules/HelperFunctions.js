@@ -157,27 +157,29 @@ export default class HelperFunctions {
     }).reduce((s, b) => s + b, 0)
   }
 
-  static countOneMissing (squares, lines) {
-    return lines.map(line => {
-      const [a, b, c, d, e] = line
-      if (squares[a].isClicked && squares[b].isClicked && squares[c].isClicked && squares[d].isClicked) {
-        return 1
-      } else if (squares[a].isClicked && squares[b].isClicked && squares[c].isClicked && squares[e].isClicked) {
-        return 1
-      } else if (squares[a].isClicked && squares[b].isClicked && squares[d].isClicked && squares[e].isClicked) {
-        return 1
-      } else if (squares[a].isClicked && squares[c].isClicked && squares[d].isClicked && squares[e].isClicked) {
-        return 1
-      } else if (squares[b].isClicked && squares[c].isClicked && squares[d].isClicked && squares[e].isClicked) {
-        return 1
-      } else {
-        return 0
+  static countMissing (squares, lines, length) {
+    return lines.map(l => {
+      for (let subset of this.subsets(l)) {
+        if (subset.length === length) {
+          if (subset.every(i => squares[i].isClicked)) {return 1}
+        }
       }
-    }).reduce((s, b) => s + b, 0)
+    }).reduce((s, b) => s + (b || 0), 0)
   }
 
   static formatDate (date) {
     return dateFormat(date, 'isoDateTime')
+  }
+
+  static * subsets (array, offset = 0) {
+    while (offset < array.length) {
+      let first = array[offset++]
+      for (let subset of this.subsets(array, offset)) {
+        subset.push(first)
+        yield subset
+      }
+    }
+    yield []
   }
 }
 

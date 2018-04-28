@@ -78,7 +78,7 @@ export default class MessageHandler {
     stats['bingos'] = this.gm.users.reduce((s, u) => s + u.bingos, 0)
     stats['oneToGo'] = this.gm.users
       .reduce((s, u) =>
-        s + hf.countOneMissing(u.board, u.lines),
+        s + (hf.countMissing(u.board, u.lines, 4) || 0),
         0)
     // TODO: get number of plyers that need one, two, three. etc for a bingo
     this.broadcast(p.MESSAGE_STATS, stats)
