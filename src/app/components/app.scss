@@ -1,0 +1,56 @@
+body {
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 6.25% auto;
+}
+
+#app {
+  padding: 2rem;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 3px 6px 25px #333;
+}
+
+ol, ul {
+  padding-left: 30px;
+}
+
+.status {
+  margin-bottom: 10px;
+}
+
+.game-info li {
+  margin-bottom: 0;
+}
+
+.ReactModal__Overlay {
+  z-index: 100;
+}
+
+.react-tabs__tab-panel {
+  height: 100%;
+  max-height: 200px;
+  min-height: 200px;
+  overflow-y: scroll;
+}
+
+#errorMessage {
+  font-size: 80%;
+  height: 20px;
+  min-height: 20px;
+  max-height: 20px;
+}
+
+.login-btn {
+  background-color: white;
+  color: black;
+  border: none;
+  font-size: 1.7rem;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.danger {
+  background-color: #b74665;
+  color: white;
+  font-weight: 600;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Dicos Youtube Bingo">
+    <meta name="keywords" content="DICO,DicoTV,Bingo">
+    <meta name="author" content="Tobias Lahmann">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
+    -->
+    <link rel="manifest" href="./manifest.json">
+    <link rel="shortcut icon" href="./favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css"
+          integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
+          integrity="sha256-2YQRJMXD7pIAPHiXr0s+vlRWA7GYJEK0ARns7k2sbHY=" crossorigin="anonymous"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/trianglify/1.2.0/trianglify.min.js"
+            integrity="sha256-UCHhqaMVxXKKqtB4/iVwO+dBIFsWuPR8w74Nn6tG0f4=" crossorigin="anonymous"></script>
+    <script defer type='text/javascript'>
+      document.addEventListener('DOMContentLoaded', function (event) {
+        var pattern = Trianglify({
+          height: window.innerHeight,
+          width: window.innerWidth,
+          cell_size: 400
+        })
+
+        document.body.style['background-image'] = 'url(' + pattern.png() + ')'
+      })
+    </script>
+</head>
+<body>
+<noscript>
+    You need to enable JavaScript to run this app.
+</noscript>
+<div id="root" class="container">
+</div>
+</body>
+</html>

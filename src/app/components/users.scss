@@ -1,0 +1,35 @@
+//colors
+$white: #ffffff;
+$color_boulder_approx: #797979;
+$color_bon_jour_approx: #e2e2e2;
+
+//fonts
+$font_0: sans-serif;
+
+#users {
+  background: $white;
+  height: 100%;
+  max-height: 100%;
+  ul {
+    height: 100%;
+    max-height: 100%;
+    list-style-type: none;
+    padding-left: 0;
+  }
+  li {
+    list-style-type: none;
+    padding: 0.15em;
+    font-family: $font_0;
+    font-size: 1.0em;
+    margin: 0;
+    &.guest {
+      color: $color_boulder_approx;
+    }
+    &.user {
+      font-weight: bold;
+    }
+    &:hover {
+      background-color: $color_bon_jour_approx;
+    }
+  }
+}

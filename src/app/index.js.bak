@@ -1,0 +1,242 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+
+(function () {
+
+  function Square (props) {
+    const classe = `${props.clicked ? 'clicked' : ''}`
+    return (
+      <button className={'square'} onClick={props.onClick}>
+        <div className={classe}>
+        {props.value}
+        </div>
+      </button>
+    )
+  }
+
+  class Board extends React.Component {
+    constructor (props) {
+      super(props)
+      this.state = {
+        squares: (new Array(25)).fill(null),
+        isClicked: (new Array(25)).fill(null)
+      }
+
+      this.lines = [
+        // Horizontally
+        [0, 1, 2, 3, 4],
+        [5, 6, 7, 8, 9],
+        [10, 11, 12, 13, 14],
+        [15, 16, 17, 18, 19],
+        [20, 21, 22, 23, 24],
+        // Vertically
+        [0, 5, 10, 15, 20],
+        [1, 6, 11, 16, 21],
+        [2, 7, 12, 17, 22],
+        [3, 8, 13, 18, 23],
+        [4, 9, 14, 19, 24],
+        // Diagonal
+        [0, 6, 12, 18, 24],
+        [4, 8, 12, 16, 20]
+      ]
+
+      let arr = []
+      for (let j = 0; j < 5; ++j) {
+        arr[j] = new Array(15)
+        for (let i = 0; i < 15; ++i) {
+          arr[j][i] = j * 15 + i + 1
+        }
+        arr[j] = shuffle(arr[j]).slice(0, 5)
+      }
+
+      this.state.squares = [].concat.apply([], transpose(arr))
+
+      // Disable center button
+      this.state.squares[12] = 'FREE'
+      this.state.isClicked[12] = true
+    }
+
+    handleClick (i) {
+      const isClicked = this.state.isClicked.slice()
+
+      // If already clicked return
+      if (isClicked[i] || this.props.number != this.state.squares[i]) {
+        return
+      }
+
+      // Else, change the state of the clicked button
+      isClicked[i] = !isClicked[i]
+      this.setState({isClicked: isClicked})
+
+      // and calculate it the player has won
+      if (calculateWinner(isClicked, this.lines)) {
+        this.props.socket.send(JSON.stringify({
+          type: 'winner',
+          data: 'yay'
+        }))
+      }
+    }
+
+    renderSquare (i) {
+      return (
+        <Square
+          value={this.state.squares[i]}
+          clicked={this.state.isClicked[i]}
+          onClick={() => this.handleClick(i)}
+        />
+      )
+    }
+
+    render () {
+      return (
+        <div>
+          <div className="board-row">
+            {this.renderSquare(0)}
+            {this.renderSquare(1)}
+            {this.renderSquare(2)}
+            {this.renderSquare(3)}
+            {this.renderSquare(4)}
+          </div>
+          <div className="board-row">
+            {this.renderSquare(5)}
+            {this.renderSquare(6)}
+            {this.renderSquare(7)}
+            {this.renderSquare(8)}
+            {this.renderSquare(9)}
+          </div>
+          <div className="board-row">
+            {this.renderSquare(10)}
+            {this.renderSquare(11)}
+            {this.renderSquare(12)}
+            {this.renderSquare(13)}
+            {this.renderSquare(14)}
+          </div>
+          <div className="board-row">
+            {this.renderSquare(15)}
+            {this.renderSquare(16)}
+            {this.renderSquare(17)}
+            {this.renderSquare(18)}
+            {this.renderSquare(19)}
+          </div>
+          <div className="board-row">
+            {this.renderSquare(20)}
+            {this.renderSquare(21)}
+            {this.renderSquare(22)}
+            {this.renderSquare(23)}
+            {this.renderSquare(24)}
+          </div>
+        </div>
+      )
+    }
+  }
+
+  class Game extends React.Component {
+    constructor () {
+      super()
+      this.socket = new WebSocket('ws://localhost:8021')
+    }
+
+    componentWillMount () {
+      // console.log(this.socket)
+      this.socket.onopen = () => Game.onSocketOpen()
+      this.socket.onmessage = (m) => this.onSocketData(m)
+      this.socket.onclose = () => Game.onSocketClose()
+    }
+
+    static onSocketOpen () {
+      console.log('Connection established!')
+    }
+
+    onSocketData (data) {
+      // console.log('Message send!')
+      const decoded = JSON.parse(data.data)
+      this.number = decoded.data
+      this.forceUpdate()
+    }
+
+    static onSocketClose () {
+      // console.log('Connection closed!')
+    }
+
+    render () {
+      return (
+        <div className="game row">
+          <div className="game-board seven columns">
+            <Board
+              socket={this.socket}
+              number={this.number}
+            />
+          </div>
+          <div className="game-info five columns">
+            <h4>Dicos Bingo</h4>
+            <div className='badge'><span className="badgeContent">{this.number}</span></div>
+          </div>
+        </div>
+      )
+    }
+  }
+
+// ========================================
+
+  ReactDOM.render(
+    <Game/>,
+    document.getElementById('root')
+  )
+
+  // Helper functions
+  function calculateWinner (squares, lines) {
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c, d, e] = lines[i]
+      if (squares[a] && squares[b] && squares[c] && squares[d] && squares[e]) {
+        lines.splice(i, 1)
+        return squares[a]
+      }
+    }
+    return null
+  }
+
+  function shuffle (array) {
+    let tmp, current, top = array.length
+    if (top) while (--top) {
+      current = Math.floor(Math.random() * (top + 1))
+      tmp = array[current]
+      array[current] = array[top]
+      array[top] = tmp
+    }
+    return array
+  }
+
+  function transpose (a) {
+
+    // Calculate the width and height of the Array
+    let w = a.length || 0
+    let h = a[0] instanceof Array ? a[0].length : 0
+
+    // In case it is a zero matrix, no transpose routine needed.
+    if (h === 0 || w === 0) { return [] }
+
+    /**
+     * @var {Number} i Counter
+     * @var {Number} j Counter
+     * @var {Array} t Transposed data is stored in this array.
+     */
+    let i, j, t = []
+
+    // Loop through every item in the outer array (height)
+    for (i = 0; i < h; i++) {
+
+      // Insert a new row (array)
+      t[i] = []
+
+      // Loop through every item per item in outer array (width)
+      for (j = 0; j < w; j++) {
+
+        // Save transposed data.
+        t[i][j] = a[j][i]
+      }
+    }
+
+    return t
+  }
+})()
