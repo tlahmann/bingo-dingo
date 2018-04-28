@@ -15,7 +15,7 @@ import uuid from 'node-uuid'
 const wsPort = 8021
 const dataBaseURL = 'mongodb://localhost:27017/'
 const wss = new WebSocket.Server({port: wsPort})
-let session = ''
+let session = '93f5474c-1334-46be-b47b-8e4df19469e2'
 // const fileName = './session.txt'
 
 /// STARTUP routine
@@ -67,7 +67,6 @@ wss.on('connection', (ws) => {
   ws.on('close', () => {
     mh.broadcast(p.MESSAGE_USER_LEAVES, {id: me.id})
     gm.removeSocket(ws)
-    return
   })
 
   ws.on('message', (m) => {
@@ -126,7 +125,7 @@ wss.on('connection', (ws) => {
           }).catch(err => console.log(err))
         }
 
-        if (me.isAdmin) {
+        if (user.password) {
           mh.sendPacket(ws, p.MESSAGE_AUTHENTICATE, null)
         }
         else {
