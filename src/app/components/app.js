@@ -312,7 +312,7 @@ class App extends React.Component {
                 <Tab>Statistik</Tab>
                 <Tab>Regeln</Tab>
                 {this.state.isAdmin ? <Tab>Zahlen eingeben</Tab> : []}
-                {/*{this.state.isAdmin ? <Tab>Zurücksetzten</Tab> : []}*/}
+                {this.state.isAdmin ? <Tab>Zurücksetzten</Tab> : []}
               </TabList>
 
               <TabPanel>
@@ -337,7 +337,8 @@ class App extends React.Component {
                   <div className="row">
                     <div className="twelve columns">
                       Dabei handelt es sich in der Regel um 75 durchnummerierte Kugeln (1-75).
-                      Bei dem Caller handelt es sich also um den Spielleiter, der dafür verantwortlich ist die Zahlen und zu ziehen, um diese dann anzusagen
+                      Bei dem Caller handelt es sich also um den Spielleiter, der dafür verantwortlich ist die Zahlen
+                      und zu ziehen, um diese dann anzusagen
                       Meistens werden 75 Kugeln verwendet
                       Der Caller sagt die gezogenen Zahlen an
                       Vollkommen willkürlich erfolgte Ziehung
@@ -355,10 +356,10 @@ class App extends React.Component {
                   />
                 </TabPanel>
                 : []}
-              {/*{this.state.isAdmin ? <TabPanel>
+              {this.state.isAdmin ? <TabPanel>
                   <button type="submit" className="danger" onClick={(e) => this.reset(e)}>Zurücksetzen</button>
                 </TabPanel>
-                : []}*/}
+                : []}
               {/*TODO: Add how to play*/}
             </Tabs>
             <a href='https://ko-fi.com/E1E5C1W2' target='_blank' className="u-pull-right">

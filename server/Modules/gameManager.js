@@ -12,7 +12,6 @@ export default class GameManager {
     this.users = []
     this.numbers = []
     this.numBingos = 0
-    console.log('# %s: GameManager running.', hf.formatDate(new Date()))
   }
 
   addUser (user) {
@@ -21,7 +20,7 @@ export default class GameManager {
     }
   }
 
-  getUserBySocket = (ws) => this.users.filter(u => u.client === ws).reduce(v => v)
+  getUserBySocket = (ws) => this.users.filter(u => u.client === ws).reduce(v => v, [])
 
   removeSocket (ws) {
     let index = this.users.indexOf(this.getUserBySocket(ws))

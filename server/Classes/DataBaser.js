@@ -10,6 +10,7 @@ export default class DataBaser {
       if (err) throw err
       let dbo = that.dbo = db.db('bingo-dingo')
       that.Users = dbo.collection('users')
+      that.Boards = dbo.collection('boards')
       that.Numbers = dbo.collection('numbers')
       console.log('# %s: Database connection established. Database: bingo-dingo.', hf.formatDate(new Date()))
       console.log('')
@@ -57,28 +58,28 @@ export default class DataBaser {
       })
   }
 
-  insertNewUser (user, session) {
+  insertNewUser (user) {
     let u = {
       nickname: user.nickname,
-      // boards: [{sessionId: session, board: user.board}],
-      board: user.board,
-      isAdmin: user.isAdmin
+      role: user.isAdmin ? 'admin' : 'user'
     }
     return this.Users.insertOne(u)
       .then(() => { }, (err) => { throw err })
   }
 
   findBoard (userName, sessionId) {
-    return this.Users.find(
-      {'nickname': userName},
-      {_id: 0, boards: {$elemMatch: {sessionId: sessionId}}}
-    ).then(() => { }, (err) => { throw err })
+    return this.Boards.findOne(
+      {'nickname': userName, 'session': sessionId}
+    ).then(board => board, (err) => { throw err })
   }
 
   insertNewBoard (user, session) {
-    let filter = {nickname: user.nickname}
-    let insVal = {sessionId: session, board: user.board}
-    return this.Users.update(filter, {$push: {boards: insVal}})
+    let b = {
+      nickname: user.nickname,
+      session: session,
+      board: user.board
+    }
+    return this.Boards.insertOne(b)
       .then(() => { }, (err) => { throw err })
   }
 
@@ -94,9 +95,9 @@ export default class DataBaser {
       .then(() => { }, (err) => { throw err })
   }
 
-  userClick (userNickname, number) {
-    return this.Users.update(
-      {nickname: userNickname, 'board.number': parseInt(number)},
+  userClick (userNickname, session, number) {
+    return this.Boards.update(
+      {nickname: userNickname, 'session': session, 'board.number': parseInt(number)},
       {$set: {'board.$.isClicked': true}}
     ).then(() => { }, (err) => { throw err })
   }

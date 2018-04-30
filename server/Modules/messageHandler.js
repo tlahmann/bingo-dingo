@@ -24,7 +24,7 @@ export default class MessageHandler {
     try {
       ws.send(output)
     } catch (err) {
-      console.log('# %s: Failed to send packet: %s', hf.formatDate(new Date()), err.message)
+      // console.log('# %s: Failed to send packet: %s', hf.formatDate(new Date()), err.message)
     }
   }
 
