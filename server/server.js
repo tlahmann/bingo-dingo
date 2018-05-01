@@ -15,9 +15,9 @@ import path from 'path'
 // Parameters
 const wsPort = 8021
 const dataBaseURL = 'mongodb://localhost:27017/'
+const fileName = path.join(__dirname, 'session.txt')
 const wss = new WebSocket.Server({port: wsPort})
 let session = ''
-const fileName = path.join(__dirname, 'session.txt')
 let bannedIPs = []
 
 /// STARTUP routine
@@ -50,7 +50,6 @@ wss.on('connection', (ws, req) => {
    */
   let me = new User(ws)
   gm.addUser(me)
-  console.log(req.connection.remoteAddress)
   if (bannedIPs.indexOf(req.connection.remoteAddress) !== -1) {
     mh.sendPacket(ws, p.MESSAGE_BANNED, null)
     ws.close()
@@ -123,9 +122,8 @@ wss.on('connection', (ws, req) => {
       db.findUser(decoded.data.nickname).then((user) => {
         if (user) {
           me.nickname = user.nickname
-          console.log(user.role)
-          me.isAdmin = user.role === 'admin'
-          shouldAuthenticate = user.password || false
+          me.setRole(user.role)
+          shouldAuthenticate = user.password || me.shouldAuthenticate()
           console.log('# %s: A returning player was fetched from the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
         } else {
           db.insertNewUser(me, session).then(() => {
@@ -145,7 +143,7 @@ wss.on('connection', (ws, req) => {
           {
             id: me.id,
             nickname: decoded.data.nickname,
-            isAdmin: me.isAdmin
+            role: me.role
           })
       }).catch(function (err) {
         console.log('# %s: A mongo error occured: %s', hf.formatDate(new Date()), err.message)
@@ -239,14 +237,14 @@ wss.on('connection', (ws, req) => {
 
           mh.sendPacket(ws, p.MESSAGE_NICKNAME_GRANTED, null)
           mh.sendPacket(ws, p.MESSAGE_USER_BOARD, {board: me.board})
-          mh.sendPacket(ws, p.MESSAGE_HELLO, {isAdmin: true})
+          // mh.sendPacket(ws, p.MESSAGE_HELLO, {isAdmin: true})
 
           mh.broadcast(
             p.MESSAGE_USER_STATE_CHANGE,
             {
               id: me.id,
               nickname: decoded.data.nickname,
-              isAdmin: me.isAdmin
+              role: me.role
             })
         }
       }).catch(err => console.log(err))

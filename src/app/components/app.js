@@ -94,13 +94,6 @@ class App extends React.Component {
      */
     if (decoded.type === p.MESSAGE_HISTORY) {
       this.setState({numberLog: decoded.data})
-      this.forceUpdate()
-      return
-    }
-
-    if (decoded.type === p.MESSAGE_HELLO) {
-      this.setState({isAdmin: decoded.data.isAdmin})
-      this.forceUpdate()
       return
     }
 
@@ -170,14 +163,17 @@ class App extends React.Component {
     }
 
     if (decoded.type === p.MESSAGE_USER_STATE_CHANGE) {
+      let that = this
       this.state.userList
         .filter(u => u.id == decoded.data.id)
         .map(u => {
           if ('nickname' in decoded.data) {
             u.nickname = decoded.data.nickname
           }
-          if ('isAdmin' in decoded.data) {
-            u.isAdmin = decoded.data.isAdmin
+          if ('role' in decoded.data) {
+            u.role = decoded.data.role
+            console.log('user state changed')
+            that.setState({role: u.role})
           }
         })
       this.forceUpdate()
@@ -210,9 +206,7 @@ class App extends React.Component {
     }
 
     if (decoded.type === p.MESSAGE_USER_LIST) {
-      this.state.userList = []
-      decoded.data.map(u => this.state.userList.push(u))
-      this.forceUpdate()
+      this.setState({userList: decoded.data})
       return
     }
   }
@@ -243,7 +237,12 @@ class App extends React.Component {
   }
 
   onSocketClose () {
-    this.state.messageLog.push('Die verbindung zum Server wurde unterbrochen.')
+    let err = {
+      id: 'SERVER_ERROR',
+      timestamp: new Date().getTime(),
+      message: 'Die verbindung zum Server wurde unterbrochen.'
+    }
+    this.state.messageLog.push(err)
     this.forceUpdate()
     // this.socket.connect('ws://' + window.location.hostname + ':8021')
     // setTimeout(() => {
@@ -302,7 +301,7 @@ class App extends React.Component {
       passwordRequired: false,
       password: '',
       userList: [],
-      isAdmin: false,
+      role: 'user',
       modalIsOpen: {login: false, banned: false},
       board: (new Array(25)).fill({number: 0, isClicked: false})
     }
@@ -341,8 +340,8 @@ class App extends React.Component {
                 <Tab>Spieler</Tab>
                 <Tab>Statistik</Tab>
                 {/*<Tab>Regeln</Tab>*/}
-                {this.state.isAdmin ? <Tab>Zahlen eingeben</Tab> : []}
-                {this.state.isAdmin ? <Tab>Zurücksetzten</Tab> : []}
+                {this.state.role === 'admin' ? <Tab>Zahlen eingeben</Tab> : []}
+                {this.state.role === 'admin' ? <Tab>Zurücksetzten</Tab> : []}
               </TabList>
 
               <TabPanel>
@@ -354,6 +353,7 @@ class App extends React.Component {
               <TabPanel>
                 <Users
                   users={this.state.userList}
+                  moderating={this.state.role === 'admin' || this.state.role === 'moderator'}
                 />
               </TabPanel>
               <TabPanel>
@@ -380,13 +380,13 @@ class App extends React.Component {
                   </div>
                 </div>
               </TabPanel>*/}
-              {this.state.isAdmin ? <TabPanel>
+              {this.state.role === 'admin' ? <TabPanel>
                   <Input
                     socket={this.socket}
                   />
                 </TabPanel>
                 : []}
-              {this.state.isAdmin ? <TabPanel>
+              {this.state.role === 'admin' ? <TabPanel>
                   <button type="submit" className="danger" onClick={(e) => this.reset(e)}>Zurücksetzen</button>
                 </TabPanel>
                 : []}

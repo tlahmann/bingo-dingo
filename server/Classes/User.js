@@ -8,13 +8,21 @@ export default class User {
     this.client = ws
     this.nickname = null
     this.joinedAt = new Date().getTime()
-    this.isAdmin = false
+    this.role = 'user'
     this.board = HelperFunctions.getRandomGameBoard()
     this.lines = HelperFunctions.getLines()
     this.bingos = 0
   }
 
-  setAdmin () {
-    this.isAdmin = true
+  setRole (role) {
+    this.role = role
+  }
+
+  isAdmin () {
+    return this.role === 'admin'
+  }
+
+  shouldAuthenticate () {
+    return this.role === 'admin' || this.role === 'moderator'
   }
 }

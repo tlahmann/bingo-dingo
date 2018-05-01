@@ -8,16 +8,22 @@ class Users extends React.Component {
   }
 
   render () {
-    let admins = this.props.users.filter(u => u.isAdmin)
+    let btn = (this.props.moderating ? <button className="kickBtn u-pull-right">X</button> : [])
+    let admins = this.props.users.filter(u => u.role === 'admin')
     admins = admins.map(u =>
       (
-        <li className={'user'} key={u.id} style={{color: '#46b798'}}>&#9733; {u.nickname}</li>
+        <li className={'user'} key={u.id} style={{color: '#46b798'}}>&#9818; {u.nickname}</li>
+      ))
+    let moderators = this.props.users.filter(u => u.role === 'moderator')
+    moderators = moderators.map(u =>
+      (
+        <li className={'user'} key={u.id} style={{color: '#5f84f1'}}>&#9733; {u.nickname}</li>
       ))
 
-    let registered = this.props.users.filter(u => u.nickname && !u.isAdmin)
+    let registered = this.props.users.filter(u => u.nickname && u.role !== 'admin' && u.role !== 'moderator')
     let users = registered.map(u =>
       (
-        <li className={'user'} key={u.id}>{u.nickname}</li>
+        <li className={'user'} key={u.id}>{u.nickname} {btn}</li>
       ))
 
     let unregistered = this.props.users.filter(u => !u.nickname)
@@ -30,6 +36,7 @@ class Users extends React.Component {
         Spieler
         <ul ref="list">
           {admins || 'None'}
+          {moderators || 'None'}
           {users || 'None'}
         </ul>
       </div>

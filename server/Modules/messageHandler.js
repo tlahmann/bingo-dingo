@@ -44,7 +44,7 @@ export default class MessageHandler {
         return {
           id: u.id,
           nickname: u.nickname,
-          isAdmin: u.isAdmin
+          role: u.role
         }
       })
     this.sendPacket(ws, p.MESSAGE_USER_LIST, output)
