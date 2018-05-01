@@ -310,3 +310,5 @@ modules.xml
 ## Dists
 /dist_server
 /dist_client
+
+server/session.txt

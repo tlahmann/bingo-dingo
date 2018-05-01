@@ -147,8 +147,6 @@ wss.on('connection', (ws, req) => {
             nickname: decoded.data.nickname,
             isAdmin: me.isAdmin
           })
-
-        mh.sendStats(ws)
       }).catch(function (err) {
         console.log('# %s: A mongo error occured: %s', hf.formatDate(new Date()), err.message)
       }).then(
@@ -189,7 +187,6 @@ wss.on('connection', (ws, req) => {
 
           // and broadcast it to all players
           mh.broadcast(p.MESSAGE_NUMBER, n)
-          mh.sendStats()
         }
       }).catch(err => console.log(err))
       return
@@ -203,7 +200,6 @@ wss.on('connection', (ws, req) => {
         from: me.nickname,
         message: me.nickname + ' hat ein Bingo erreicht!'
       })
-      mh.sendStats()
       return
     }
 
@@ -211,7 +207,6 @@ wss.on('connection', (ws, req) => {
       db.userClick(me.nickname, session, decoded.data.number)
       let indx = me.board.findIndex(f => f.number === parseInt(decoded.data.number))
       me.board[indx].isClicked = true
-      mh.sendStats()
       return
     }
 
