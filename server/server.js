@@ -110,7 +110,7 @@ wss.on('connection', (ws, req) => {
     if (decoded.type === p.MESSAGE_CHECK_NICKNAME) {
       let err = gm.isValidUsername(decoded.data.nickname)
       if (err) {
-        mh.sendPacket(ws, err.type, null)
+        mh.sendPacket(ws, err.type, err.data)
         return
       }
 
@@ -120,7 +120,7 @@ wss.on('connection', (ws, req) => {
     if (decoded.type === p.MESSAGE_REQUEST_NICKNAME) {
       let err = gm.isValidUsername(decoded.data.nickname)
       if (err) {
-        mh.sendPacket(ws, err.type, null)
+        mh.sendPacket(ws, err.type, err.data)
         return
       }
 
@@ -162,10 +162,10 @@ wss.on('connection', (ws, req) => {
             me.board = board.board
             me.bingos = hf.countBingos(me.board, me.lines)
             me.lines = hf.clearLines(me.board, me.lines)
-            console.log('# %s: The player got an existing board.', hf.formatDate(new Date()))
+            // console.log('# %s: The player got an existing board.', hf.formatDate(new Date()))
           } else {
             db.insertNewBoard(me, session).then(() => {
-              console.log('# %s: A new board was added to the database.', hf.formatDate(new Date()))
+              // console.log('# %s: A new board was added to the database.', hf.formatDate(new Date()))
             }).catch(err => console.log(err))
           }
           if (!shouldAuthenticate) {

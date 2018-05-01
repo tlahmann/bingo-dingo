@@ -111,32 +111,8 @@ class App extends React.Component {
       return
     }
 
-    if (decoded.type === p.MESSAGE_NAME_TOO_SHORT) {
-      this.state.lastNameDetail = 'Nickname too short.'
-      this.state.desiredNameValid = false
-      this.state.requireLogin = false
-      this.forceUpdate()
-      return
-    }
-
-    if (decoded.type === p.MESSAGE_NAME_IN_USE) {
-      this.state.lastNameDetail = 'Nickname already in use.'
-      this.state.desiredNameValid = false
-      this.state.requireLogin = false
-      this.forceUpdate()
-      return
-    }
-
-    if (decoded.type === p.MESSAGE_NAME_TOO_LONG) {
-      this.state.lastNameDetail = 'Nickname too long.'
-      this.state.desiredNameValid = false
-      this.state.requireLogin = false
-      this.forceUpdate()
-      return
-    }
-
-    if (decoded.type === p.MESSAGE_NAME_BAD_CHARACTERS) {
-      this.state.lastNameDetail = 'Nickname contains invalid characters.'
+    if (decoded.type === p.MESSAGE_NICKNAME_INVALID) {
+      this.state.lastNameDetail = decoded.data.message
       this.state.desiredNameValid = false
       this.state.requireLogin = false
       this.forceUpdate()

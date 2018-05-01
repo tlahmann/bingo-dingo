@@ -2,7 +2,7 @@
 
 import validator from 'validator'
 import p from '../protocol'
-import hf from '../Modules/HelperFunctions'
+import pfui from '../listOfBadWords'
 
 const minNicknameLength = 3
 const maxNicknameLength = 22
@@ -11,7 +11,6 @@ export default class GameManager {
   constructor () {
     this.users = []
     this.numbers = []
-    this.numBingos = 0
   }
 
   addUser (user) {
@@ -38,31 +37,39 @@ export default class GameManager {
   isValidUsername (newUser) {
     newUser = newUser.trim()
     // Check if the username is alphanumeric characters only
-    if (!validator.matches(newUser, '^(([A-Za-z\\d\\-_])+[ ]?)*[A-Za-z\\d\\-_]+$')) {
+    if (!validator.matches(newUser, '^(([A-Za-zÄÖÜäöü\\d\\-_])+[ ]?)*[A-Za-zÄÖÜäöü\\d\\-_]+$')) {
       return {
-        type: p.MESSAGE_NAME_BAD_CHARACTERS,
-        data: null
+        type: p.MESSAGE_NICKNAME_INVALID,
+        data: {message: 'Der Benutzername enthält ungültige Zeichen'}
       }
     }
     // Check if the username is too short
     if (newUser.length < minNicknameLength) {
       return {
-        type: p.MESSAGE_NAME_TOO_SHORT,
-        data: null
+        type: p.MESSAGE_NICKNAME_INVALID,
+        data: {message: 'Der Benutzername ist zu kurz'}
       }
     }
     // check if the username is too long
     if (newUser.length > maxNicknameLength) {
       return {
-        type: p.MESSAGE_NAME_TOO_LONG,
-        data: null
+        type: p.MESSAGE_NICKNAME_INVALID,
+        data: {message: 'Der Benutzername ist zu lang'}
       }
     }
     // check if the username is already taken
     if (this.users.filter(u => u.nickname === newUser).length) {
       return {
-        type: p.MESSAGE_NAME_IN_USE,
-        data: null
+        type: p.MESSAGE_NICKNAME_INVALID,
+        data: {message: 'Der Benutzername wird bereits verwendet'}
+      }
+    }
+    newUser = newUser.toLowerCase().replace(/[0-9]/g, '')
+    // check if the username is already taken
+    if (pfui.some(w => newUser.indexOf(w) !== -1)) {
+      return {
+        type: p.MESSAGE_NICKNAME_INVALID,
+        data: {message: 'Der Benutzername enthält nicht erlaubte Wörter'}
       }
     }
     // all checks passed: return no error
