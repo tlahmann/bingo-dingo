@@ -48,12 +48,22 @@ wss.on('connection', (ws, req) => {
    * If a user connects and is not a returning user he or she gets a random uuid assigned. The nickname is unset at first
    * @type {User}
    */
-  let me = new User(ws)
+  let me = new User(ws, req.connection.remoteAddress)
   gm.addUser(me)
   if (bannedIPs.indexOf(req.connection.remoteAddress) !== -1) {
-    mh.sendPacket(ws, p.MESSAGE_BANNED, null)
+    mh.sendPacket(ws, p.MESSAGE_BANNED, {
+      id: uuid.v4(),
+      timestamp: new Date().getTime(),
+      message: 'Der Zugang wurde gesperrt!'
+    })
     ws.close()
-    return
+  } else if (gm.users.filter(u => u.remoteAddress === req.connection.remoteAddress).length > 3) {
+    mh.sendPacket(ws, p.MESSAGE_SERVER_REJECT, {
+      id: uuid.v4(),
+      timestamp: new Date().getTime(),
+      message: 'Es sind nicht mehr als 3 Verbindungen gleichzeitig erlaubt!'
+    })
+    ws.close()
   }
 
   /***
@@ -159,6 +169,7 @@ wss.on('connection', (ws, req) => {
             }).catch(err => console.log(err))
           }
           if (!shouldAuthenticate) {
+            // TODO: users that change name during login (first with auth then choosing another name) get the board of the player entered before
             mh.sendPacket(ws, p.MESSAGE_USER_BOARD, {board: me.board})
           }
         })).catch(function (err) {
@@ -233,7 +244,6 @@ wss.on('connection', (ws, req) => {
         if (user) {
           gm.getUserBySocket(ws).nickname = user.nickname
           me.setRole(user.role)
-          gm.getUserBySocket(ws).isAdmin = user.isAdmin
 
           mh.sendPacket(ws, p.MESSAGE_NICKNAME_GRANTED, null)
           mh.sendPacket(ws, p.MESSAGE_USER_BOARD, {board: me.board})

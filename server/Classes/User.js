@@ -3,11 +3,12 @@ import uuid from 'node-uuid'
 import HelperFunctions from '../Modules/HelperFunctions'
 
 export default class User {
-  constructor (ws) {
+  constructor (ws, ra) {
     this.id = uuid.v4()
     this.client = ws
     this.nickname = null
     this.joinedAt = new Date().getTime()
+    this.remoteAddress = ra
     this.role = 'user'
     this.board = HelperFunctions.getRandomGameBoard()
     this.lines = HelperFunctions.getLines()

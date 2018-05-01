@@ -189,8 +189,9 @@ class App extends React.Component {
       return
     }
 
-    if (decoded.type === p.MESSAGE_BANNED) {
-      this.openModal('banned')
+    if (decoded.type === p.MESSAGE_SERVER_REJECT) {
+      this.state.lastNameDetail = decoded.data.message
+      this.openModal('error')
       this.forceUpdate()
       return
     }
@@ -260,10 +261,10 @@ class App extends React.Component {
   openModal (modal) {
     let state = {}
     if (modal === 'login') {
-      state = {modalIsOpen: {login: true, banned: false}}
+      state = {modalIsOpen: {login: true, error: false}}
     }
-    else if (modal === 'banned') {
-      state = {modalIsOpen: {login: false, banned: true}}
+    else if (modal === 'error') {
+      state = {modalIsOpen: {login: false, error: true}}
     } else {
       return
     }
@@ -276,7 +277,7 @@ class App extends React.Component {
   }
 
   closeModal () {
-    this.setState({modalIsOpen: {login: false, banned: false}})
+    this.setState({modalIsOpen: {login: false, error: false}})
   }
 
   reset (e) {
@@ -305,7 +306,7 @@ class App extends React.Component {
       password: '',
       userList: [],
       role: 'user',
-      modalIsOpen: {login: false, banned: false},
+      modalIsOpen: {login: false, error: false},
       board: (new Array(25)).fill({number: 0, isClicked: false})
     }
 
@@ -443,12 +444,12 @@ class App extends React.Component {
           </form>
         </Modal>
         <Modal
-          isOpen={this.state.modalIsOpen.banned}
+          isOpen={this.state.modalIsOpen.error}
           onAfterOpen={this.afterOpenModal}
           style={bannedStyle}
           contentLabel="Example Modal"
         >
-          <h2>Deine IP Addresse wurde gebannt.</h2>
+          <strong className="twelve columns">{this.state.lastNameDetail}</strong>
         </Modal>
       </div>
     )
