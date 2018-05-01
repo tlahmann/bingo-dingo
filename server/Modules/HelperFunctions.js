@@ -157,7 +157,7 @@ export default class HelperFunctions {
     }).reduce((s, b) => s + b, 0)
   }
 
-  static countMissing (squares, lines, length) {
+  /*static countMissing (squares, lines, length) {
     return lines.map(l => {
       for (let subset of this.subsets(l)) {
         if (subset.length === length) {
@@ -165,13 +165,14 @@ export default class HelperFunctions {
         }
       }
     }).reduce((s, b) => s + (b || 0), 0)
-  }
+  }*/
 
   static formatDate (date) {
     return dateFormat(date, 'isoDateTime')
   }
 
-  static * subsets (array, offset = 0) {
+  // TODO: Will not work with babel at the moment
+  /*static * subsets (array, offset = 0) {
     while (offset < array.length) {
       let first = array[offset++]
       for (let subset of this.subsets(array, offset)) {
@@ -180,7 +181,7 @@ export default class HelperFunctions {
       }
     }
     yield []
-  }
+  }*/
 }
 
 module.exports = HelperFunctions

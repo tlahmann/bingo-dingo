@@ -76,11 +76,11 @@ export default class MessageHandler {
         )).length,
         0)
     stats['bingos'] = this.gm.users.reduce((s, u) => s + u.bingos, 0)
-    stats['oneToGo'] = this.gm.users
+    // TODO: get number of plyers that need one, two, three. etc for a bingo
+    /*stats['oneToGo'] = this.gm.users
       .reduce((s, u) =>
         s + (hf.countMissing(u.board, u.lines, 4) || 0),
-        0)
-    // TODO: get number of plyers that need one, two, three. etc for a bingo
+        0)*/
     this.broadcast(p.MESSAGE_STATS, stats)
   }
 }

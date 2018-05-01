@@ -10,13 +10,14 @@ import p from './protocol'
 import hf from './Modules/HelperFunctions'
 import { getLastLine, appendLine } from './Modules/fileTools'
 import uuid from 'node-uuid'
+import path from 'path'
 
 // Parameters
 const wsPort = 8021
 const dataBaseURL = 'mongodb://localhost:27017/'
 const wss = new WebSocket.Server({port: wsPort})
-let session = '3517efcf-178c-49ef-b16f-2fbb4f3db8f5'
-const fileName = './session.txt'
+let session = ''
+const fileName = path.join(__dirname, 'session.txt')
 
 /// STARTUP routine
 
@@ -201,7 +202,7 @@ wss.on('connection', (ws) => {
 
     if (decoded.type === p.MESSAGE_CLICK) {
       db.userClick(me.nickname, session, decoded.data.number)
-      let indx = me.board.findIndex(f => f.number == decoded.data.number)
+      let indx = me.board.findIndex(f => f.number === parseInt(decoded.data.number))
       me.board[indx].isClicked = true
       mh.sendStats()
       return
@@ -224,7 +225,6 @@ wss.on('connection', (ws) => {
             client.close()
           }
           gm.numbers = []
-          gm.users = []
         }
       }).catch(err => console.log(err))
     }

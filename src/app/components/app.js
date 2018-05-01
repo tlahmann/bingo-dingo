@@ -310,7 +310,7 @@ class App extends React.Component {
                 <Tab>Historie</Tab>
                 <Tab>Spieler</Tab>
                 <Tab>Statistik</Tab>
-                <Tab>Regeln</Tab>
+                {/*<Tab>Regeln</Tab>*/}
                 {this.state.isAdmin ? <Tab>Zahlen eingeben</Tab> : []}
                 {this.state.isAdmin ? <Tab>Zurücksetzten</Tab> : []}
               </TabList>
@@ -331,7 +331,7 @@ class App extends React.Component {
                   stats={this.state.stats}
                 />
               </TabPanel>
-              <TabPanel>
+              {/*<TabPanel>
                 <div id="rules">
                   Spielregeln
                   <div className="row">
@@ -349,7 +349,7 @@ class App extends React.Component {
                     </div>
                   </div>
                 </div>
-              </TabPanel>
+              </TabPanel>*/}
               {this.state.isAdmin ? <TabPanel>
                   <Input
                     socket={this.socket}
