@@ -42,14 +42,14 @@ class Stats extends React.Component {
             {this.props.stats.bingos}
           </div>
         </div>
-        {/*<div className="row">
+        <div className="row">
           <div className="eight columns">
             Reihen in denen eine Zahl fehlt
           </div>
           <div className="four columns">
             {this.props.stats.oneToGo}
           </div>
-        </div>*/}
+        </div>
       </div>
     )
   }

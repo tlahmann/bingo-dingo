@@ -122,7 +122,6 @@ wss.on('connection', (ws, req) => {
       db.findUser(decoded.data.nickname).then((user) => {
         if (user) {
           me.nickname = user.nickname
-          me.setRole(user.role)
           shouldAuthenticate = user.password || me.shouldAuthenticate()
           console.log('# %s: A returning player was fetched from the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
         } else {
@@ -233,11 +232,12 @@ wss.on('connection', (ws, req) => {
       db.authUser(decoded.data.nickname, decoded.data.password).then((user) => {
         if (user) {
           gm.getUserBySocket(ws).nickname = user.nickname
+          me.setRole(user.role)
           gm.getUserBySocket(ws).isAdmin = user.isAdmin
 
           mh.sendPacket(ws, p.MESSAGE_NICKNAME_GRANTED, null)
           mh.sendPacket(ws, p.MESSAGE_USER_BOARD, {board: me.board})
-          // mh.sendPacket(ws, p.MESSAGE_HELLO, {isAdmin: true})
+          mh.sendPacket(ws, p.MESSAGE_AUTHENTICATED, {role: me.role})
 
           mh.broadcast(
             p.MESSAGE_USER_STATE_CHANGE,

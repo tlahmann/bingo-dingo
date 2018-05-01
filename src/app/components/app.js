@@ -162,18 +162,21 @@ class App extends React.Component {
       return
     }
 
+    if (decoded.type === p.MESSAGE_AUTHENTICATED) {
+      this.setState({role: decoded.data.role})
+      return
+    }
+
     if (decoded.type === p.MESSAGE_USER_STATE_CHANGE) {
-      let that = this
+      // let that = this
       this.state.userList
-        .filter(u => u.id == decoded.data.id)
+        .filter(u => u.id === decoded.data.id)
         .map(u => {
           if ('nickname' in decoded.data) {
             u.nickname = decoded.data.nickname
           }
           if ('role' in decoded.data) {
             u.role = decoded.data.role
-            console.log('user state changed')
-            that.setState({role: u.role})
           }
         })
       this.forceUpdate()
