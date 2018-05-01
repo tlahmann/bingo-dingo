@@ -342,7 +342,7 @@ class App extends React.Component {
                 <Tab>Historie</Tab>
                 <Tab>Spieler</Tab>
                 <Tab>Statistik</Tab>
-                {/*<Tab>Regeln</Tab>*/}
+                <Tab>Regeln</Tab>
                 {this.state.role === 'admin' ? <Tab>Zahlen eingeben</Tab> : []}
                 {this.state.role === 'admin' ? <Tab>Zurücksetzten</Tab> : []}
               </TabList>
@@ -364,25 +364,30 @@ class App extends React.Component {
                   stats={this.state.stats}
                 />
               </TabPanel>
-              {/*<TabPanel>
+              {<TabPanel>
                 <div id="rules">
                   Spielregeln
-                  <div className="row">
-                    <div className="twelve columns">
-                      Dabei handelt es sich in der Regel um 75 durchnummerierte Kugeln (1-75).
-                      Bei dem Caller handelt es sich also um den Spielleiter, der dafür verantwortlich ist die Zahlen
-                      und zu ziehen, um diese dann anzusagen
-                      Meistens werden 75 Kugeln verwendet
-                      Der Caller sagt die gezogenen Zahlen an
-                      Vollkommen willkürlich erfolgte Ziehung
-                      Der Caller zieht Zahlen und sagt diese laut an
-                      Die Spieler markieren die gezogene Zahl auf der Karte
-                      Gewonnen hat der Spieler, der zuerst ein festgelegtes Muster markiert hat
-                      Die Spielrunde ist beendet und es wird eine neue Karte eingesetzt
-                    </div>
-                  </div>
+                  <ul className="row">
+                    <li className="twelve columns">
+                      Im Bingo existieren 75 durchnummerierte Kugeln (1-75)
+                    </li>
+                    <li className="twelve columns">
+                      Dico wird in bestimmten Zeitabständen live im Stream neue Zahlen ziehen und diese im Spiel
+                      freigeben
+                    </li>
+                    <li className="twelve columns">
+                      Sobald eine Zahl in der Historie auftaucht kann sie auf dem Spielfeld angeklickt werden
+                    </li>
+                    <li className="twelve columns">
+                      Gewonnen hat der Spieler, der zuerst eine vertikale, horizontale oder diagonale Linie auf seinem
+                      Spielfeld markiert hat
+                    </li>
+                    <li className="twelve columns">
+                      Nachdem ein Bingo erreicht wurde dürfen alle Spieler weiterspielen
+                    </li>
+                  </ul>
                 </div>
-              </TabPanel>*/}
+              </TabPanel>}
               {this.state.role === 'admin' ? <TabPanel>
                   <Input
                     socket={this.socket}
