@@ -51,7 +51,7 @@ wss.on('connection', (ws, req) => {
   let me = new User(ws, req.connection.remoteAddress)
   gm.addUser(me)
   if (bannedIPs.indexOf(req.connection.remoteAddress) !== -1) {
-    mh.sendPacket(ws, p.MESSAGE_BANNED, {
+    mh.sendPacket(ws, p.MESSAGE_SERVER_REJECT, {
       id: uuid.v4(),
       timestamp: new Date().getTime(),
       message: 'Der Zugang wurde gesperrt!'
@@ -208,6 +208,22 @@ wss.on('connection', (ws, req) => {
         from: me.nickname,
         message: me.nickname + ' hat ein Bingo erreicht!'
       })
+      return
+    }
+
+    if (decoded.type === p.MESSAGE_SERVER_MESSAGE) {
+      if (!decoded.message.length || !me.nickname) {
+        return
+      }
+      db.findUser(me.nickname).then(user => {
+        if (user && user.role === 'admin') {
+          mh.broadcast(p.MESSAGE_SERVER_MESSAGE, {
+            id: uuid.v4(),
+            timestamp: new Date().getTime(),
+            message: hf.sanitize(decoded.message)
+          })
+        }
+      }).catch(err => console.log(err))
       return
     }
 

@@ -61,7 +61,7 @@ export default class MessageHandler {
           }
         })
       this.sendPacket(ws, p.MESSAGE_HISTORY, output)
-    })
+    }).catch(err => {})
   }
 
   sendStats () {
