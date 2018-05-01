@@ -18,6 +18,7 @@ const dataBaseURL = 'mongodb://localhost:27017/'
 const wss = new WebSocket.Server({port: wsPort})
 let session = ''
 const fileName = path.join(__dirname, 'session.txt')
+let bannedIPs = []
 
 /// STARTUP routine
 
@@ -42,13 +43,19 @@ const mh = new MessageHandler(gm, db)
 
 /// WebSocket Server
 
-wss.on('connection', (ws) => {
+wss.on('connection', (ws, req) => {
   /***
    * If a user connects and is not a returning user he or she gets a random uuid assigned. The nickname is unset at first
    * @type {User}
    */
   let me = new User(ws)
   gm.addUser(me)
+  console.log(req.connection.remoteAddress)
+  if (bannedIPs.indexOf(req.connection.remoteAddress) !== -1) {
+    mh.sendPacket(ws, p.MESSAGE_BANNED, null)
+    ws.close()
+    return
+  }
 
   /***
    * Initially the user is asked for authentication

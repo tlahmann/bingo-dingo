@@ -13,7 +13,7 @@ import Stats from './stats'
 import './app.scss'
 import './react-tabs.scss'
 
-const customStyles = {
+const loginStyle = {
   content: {
     top: '40%',
     left: '50%',
@@ -23,6 +23,19 @@ const customStyles = {
     transform: 'translate(-50%, -50%)',
     zIndex: '100',
     backgroundColor: 'rgb(70, 183, 152)'
+  }
+}
+
+const bannedStyle = {
+  content: {
+    top: '40%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: '100',
+    backgroundColor: 'rgb(183, 70, 90)'
   }
 }
 
@@ -49,7 +62,7 @@ class App extends React.Component {
      * close afterward
      */
     if (decoded.type === p.MESSAGE_WHO_ARE_YOU) {
-      this.openModal()
+      this.openModal('login')
       return
     }
 
@@ -177,6 +190,12 @@ class App extends React.Component {
       return
     }
 
+    if (decoded.type === p.MESSAGE_BANNED) {
+      this.openModal('banned')
+      this.forceUpdate()
+      return
+    }
+
     if (decoded.type === p.MESSAGE_USER_LEAVES) {
       let matches = this.state.userList.filter(
         u => u.id === decoded.data.id
@@ -224,6 +243,8 @@ class App extends React.Component {
   }
 
   onSocketClose () {
+    this.state.messageLog.push('Die verbindung zum Server wurde unterbrochen.')
+    this.forceUpdate()
     // this.socket.connect('ws://' + window.location.hostname + ':8021')
     // setTimeout(() => {
     //     // TODO: Limit the amount of retries!
@@ -234,8 +255,17 @@ class App extends React.Component {
     // )
   }
 
-  openModal () {
-    this.setState({modalIsOpen: true})
+  openModal (modal) {
+    let state = {}
+    if (modal === 'login') {
+      state = {modalIsOpen: {login: true, banned: false}}
+    }
+    else if (modal === 'banned') {
+      state = {modalIsOpen: {login: false, banned: true}}
+    } else {
+      return
+    }
+    this.setState(state)
   }
 
   afterOpenModal () {
@@ -244,7 +274,7 @@ class App extends React.Component {
   }
 
   closeModal () {
-    this.setState({modalIsOpen: false})
+    this.setState({modalIsOpen: {login: false, banned: false}})
   }
 
   reset (e) {
@@ -273,7 +303,7 @@ class App extends React.Component {
       password: '',
       userList: [],
       isAdmin: false,
-      modalIsOpen: false,
+      modalIsOpen: {login: false, banned: false},
       board: (new Array(25)).fill({number: 0, isClicked: false})
     }
 
@@ -370,9 +400,9 @@ class App extends React.Component {
           </div>
         </div>
         <Modal
-          isOpen={this.state.modalIsOpen}
+          isOpen={this.state.modalIsOpen.login}
           onAfterOpen={this.afterOpenModal}
-          style={customStyles}
+          style={loginStyle}
           contentLabel="Example Modal"
         >
           <h2>Wie möchtest du genannt werden?</h2>
@@ -403,9 +433,14 @@ class App extends React.Component {
               </button>
             </div>
           </form>
-          {
-
-          }
+        </Modal>
+        <Modal
+          isOpen={this.state.modalIsOpen.banned}
+          onAfterOpen={this.afterOpenModal}
+          style={bannedStyle}
+          contentLabel="Example Modal"
+        >
+          <h2>Deine IP Addresse wurde gebannt.</h2>
         </Modal>
       </div>
     )
