@@ -12,7 +12,10 @@ class Board extends React.Component {
   handleClick (i) {
     const isClicked = this.props.board[i].isClicked
     // If already clicked return
-    if (isClicked || !this.props.numberLog.some(x => parseInt(x.number) === this.props.board[i].number)) {
+
+    if (isClicked || !this.props.numberLog
+      .filter(n => (new Date).getTime() - n.timestamp < 2 * 60 * 60 * 1000)
+      .some(x => parseInt(x.number) === this.props.board[i].number)) {
       return
     }
 

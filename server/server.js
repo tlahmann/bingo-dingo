@@ -201,11 +201,6 @@ wss.on('connection', (ws, req) => {
       return
     }
 
-    /*if (decoded.type === p.MESSAGE_WINNER) {
-      gm.getUserBySocket(ws).bingos++
-      return
-    }*/
-
     if (decoded.type === p.MESSAGE_SERVER_MESSAGE) {
       if (!decoded.message.length || !me.nickname) {
         return
