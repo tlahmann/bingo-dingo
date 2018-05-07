@@ -162,6 +162,7 @@ wss.on('connection', (ws, req) => {
             me.board = board.board
             me.bingos = hf.countBingos(me.board, me.lines)
             me.lines = hf.clearLines(me.board, me.lines)
+            console.log(me.lines.length)
             // console.log('# %s: The player got an existing board.', hf.formatDate(new Date()))
           } else {
             db.insertNewBoard(me, session).then(() => {
@@ -200,16 +201,10 @@ wss.on('connection', (ws, req) => {
       return
     }
 
-    if (decoded.type === p.MESSAGE_WINNER) {
+    /*if (decoded.type === p.MESSAGE_WINNER) {
       gm.getUserBySocket(ws).bingos++
-      mh.broadcast(p.MESSAGE_SERVER_MESSAGE, {
-        id: uuid.v4(),
-        timestamp: new Date().getTime(),
-        from: me.nickname,
-        message: me.nickname + ' hat ein Bingo erreicht!'
-      })
       return
-    }
+    }*/
 
     if (decoded.type === p.MESSAGE_SERVER_MESSAGE) {
       if (!decoded.message.length || !me.nickname) {
@@ -231,6 +226,16 @@ wss.on('connection', (ws, req) => {
       db.userClick(me.nickname, session, decoded.data.number)
       let indx = me.board.findIndex(f => f.number === parseInt(decoded.data.number))
       me.board[indx].isClicked = true
+      let ll = me.lines.length
+      me.lines = hf.calculateWinner(me.board, me.lines)
+      if (ll !== me.lines.length) {
+        mh.broadcast(p.MESSAGE_SERVER_MESSAGE, {
+          id: uuid.v4(),
+          timestamp: new Date().getTime(),
+          from: me.nickname,
+          message: me.nickname + ' hat ein Bingo erreicht!'
+        })
+      }
       return
     }
 

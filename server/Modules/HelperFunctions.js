@@ -129,12 +129,14 @@ export default class HelperFunctions {
     ]
   }
 
-  static verifyBingo (squares, line) {
-    const [a, b, c, d, e] = line
-    if (squares[a] && squares[b] && squares[c] && squares[d] && squares[e]) {
-      return [squares[a], squares[b], squares[c], squares[d], squares[e]]
+  static calculateWinner (board, lines) {
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c, d, e] = lines[i]
+      if (board[a].isClicked && board[b].isClicked && board[c].isClicked && board[d].isClicked && board[e].isClicked) {
+        lines.splice(i, 1)
+      }
     }
-    return null
+    return lines
   }
 
   static clearLines (squares, lines) {

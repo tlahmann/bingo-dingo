@@ -1,16 +1,12 @@
 import React from 'react'
 import './board.scss'
 import Square from './square'
-import Helper from './HelperFunctions'
 
 import p from '../../../server/protocol'
 
 class Board extends React.Component {
   constructor (props) {
     super(props)
-    this.state = {
-      helper: new Helper()
-    }
   }
 
   handleClick (i) {
@@ -28,15 +24,6 @@ class Board extends React.Component {
     // Else, change the state of the clicked button
     this.props.board[i].isClicked = !isClicked
     this.forceUpdate()
-
-    // and calculate if the player has won
-    let l = this.state.helper.calculateWinner(this.props.board)
-    if (l) {
-      this.props.socket.send(JSON.stringify({
-        type: p.MESSAGE_WINNER,
-        data: {line: l}
-      }))
-    }
   }
 
   renderSquare (i) {
