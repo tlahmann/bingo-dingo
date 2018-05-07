@@ -89,7 +89,7 @@ export default class MessageHandler {
     stats['twoToGo'] = users
       .reduce((s, u) =>
         s + (hf.countMissing(u.board, u.lines, 3) || 0),
-        0)
+        0) - stats['oneToGo']
     let nums = new Array(75).fill(0)
     users.forEach(u => {
       u.board.forEach(n => {

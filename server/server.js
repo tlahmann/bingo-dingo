@@ -162,11 +162,8 @@ wss.on('connection', (ws, req) => {
             me.board = board.board
             me.bingos = hf.countBingos(me.board, me.lines)
             me.lines = hf.clearLines(me.board, me.lines)
-            console.log(me.lines.length)
-            // console.log('# %s: The player got an existing board.', hf.formatDate(new Date()))
           } else {
             db.insertNewBoard(me, session).then(() => {
-              // console.log('# %s: A new board was added to the database.', hf.formatDate(new Date()))
             }).catch(err => console.log(err))
           }
           if (!shouldAuthenticate) {
