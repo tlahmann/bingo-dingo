@@ -300,7 +300,7 @@ class App extends React.Component {
   render () {
     return (
       <div id="app">
-        <a href="https://github.com/tlahmann/bingo-dingo">
+        <a href="https://github.com/tlahmann/bingo-dingo" target="_blank">
           <img id="github_banner"
                style={{position: 'absolute', top: '0', right: '0', border: '0'}}
                src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"
