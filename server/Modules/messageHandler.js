@@ -75,13 +75,12 @@ export default class MessageHandler {
       .reduce((s, u) =>
         s + u.board.filter(f =>
         !f.isClicked &&
-        (new Date).getTime() - f.timestamp < 2 * 60 * 60 * 1000 &&
         this.gm.numbers.some(n =>
+          (new Date).getTime() - +n.timestamp < 2 * 60 * 60 * 1000 &&
           +n.number === +f.number
         )).length,
         0)
     stats['bingos'] = users.reduce((s, u) => s + u.bingos, 0)
-    // TODO: get number of plyers that need one, two, three. etc for a bingo
     stats['oneToGo'] = users
       .reduce((s, u) =>
         s + (hf.countMissing(u.board, u.lines, 4) || 0),

@@ -57,7 +57,7 @@ wss.on('connection', (ws, req) => {
       message: 'Der Zugang wurde für dich gesperrt!'
     })
     ws.close()
-  } else if (gm.users.filter(u => u.remoteAddress === req.connection.remoteAddress).length > 30) {
+  } else if (gm.users.filter(u => u.remoteAddress === req.connection.remoteAddress).length > 3) {
     mh.sendPacket(ws, p.MESSAGE_SERVER_REJECT, {
       id: uuid.v4(),
       timestamp: new Date().getTime(),
@@ -142,6 +142,7 @@ wss.on('connection', (ws, req) => {
 
         if (shouldAuthenticate) {
           mh.sendPacket(ws, p.MESSAGE_AUTHENTICATE, null)
+          return
         }
         else {
           mh.sendPacket(ws, p.MESSAGE_NICKNAME_GRANTED, null)
@@ -167,7 +168,6 @@ wss.on('connection', (ws, req) => {
             }).catch(err => console.log(err))
           }
           if (!shouldAuthenticate) {
-            // TODO: users that change name during login (first with auth then choosing another name) get the board of the player entered before
             mh.sendPacket(ws, p.MESSAGE_USER_BOARD, {board: me.board})
           }
         })).catch(function (err) {
@@ -221,6 +221,7 @@ wss.on('connection', (ws, req) => {
       let ll = me.lines.length
       me.lines = hf.calculateWinner(me.board, me.lines)
       if (ll !== me.lines.length) {
+        me.bingos++
         mh.broadcast(p.MESSAGE_SERVER_MESSAGE, {
           id: uuid.v4(),
           timestamp: new Date().getTime(),
@@ -234,7 +235,7 @@ wss.on('connection', (ws, req) => {
     if (decoded.type === p.MESSAGE_GAME_RESET) {
       // console.log('Game reset send, ignoring...')
       db.findUser(me.nickname).then(user => {
-        if (user && user.isAdmin) {
+        if (user && user.role === 'admin') {
           session = uuid.v4()
           appendLine(fileName, session)
 

@@ -18,6 +18,10 @@ ol, ul {
   margin-bottom: 10px;
 }
 
+.game{
+  z-index: 99;
+}
+
 .game-info li {
   margin-bottom: 0;
 }
@@ -53,17 +57,6 @@ ol, ul {
   background-color: #b74665;
   color: white;
   font-weight: 600;
-}
-
-#github_banner {
-  max-height: 90px;
-}
-
-@media (max-width: 800px) {
-  #github_banner {
-    width: 26%;
-    max-width: 90px;
-  }
 }
 
 #rules {
