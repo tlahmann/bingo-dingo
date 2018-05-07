@@ -363,6 +363,10 @@ class App extends React.Component {
                       Sobald eine Zahl in der Historie auftaucht kann sie auf dem Spielfeld angeklickt werden
                     </li>
                     <li className="twelve columns">
+                      Jede Zahl kann nur für 2 Stunden geklickt werden, damit später eintreffende Spieler keinen
+                      allzugroßen Vorteil haben. Dies wird durch einen Timer in der Historie angezeigt.
+                    </li>
+                    <li className="twelve columns">
                       Gewonnen hat der Spieler, der zuerst eine vertikale, horizontale oder diagonale Linie auf seinem
                       Spielfeld markiert hat
                     </li>
