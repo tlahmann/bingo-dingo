@@ -55,10 +55,14 @@ ol, ul {
   font-weight: 600;
 }
 
+#github_banner {
+  max-height: 90px;
+}
+
 @media (max-width: 800px) {
   #github_banner {
     width: 26%;
-    max-width: 149px;
+    max-width: 90px;
   }
 }
 

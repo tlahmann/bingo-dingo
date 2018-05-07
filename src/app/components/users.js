@@ -8,7 +8,7 @@ class Users extends React.Component {
   }
 
   render () {
-    let btn = (this.props.moderating ? <button className="kickBtn u-pull-right">X</button> : [])
+    let btn = (this.props.moderating ? <button className="kickBtn u-pull-right"/> : [])
     let admins = this.props.users.filter(u => u.role === 'admin')
     admins = admins.map(u =>
       (

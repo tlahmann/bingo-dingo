@@ -9,7 +9,7 @@
     "build-client": "webpack --config webpack.prod.js --mode production",
     "server": "nodemon --watch server server/server.js --exec babel-node",
     "build-server": "babel -d ./dist_server ./server -s",
-    "database": "mongod --dbpath C:/Users/Tobias/Dropbox/Programming/bingo-dingo/data"
+    "database": "mongod --dbpath /mongoDBs/bingo-dingo"
   },
   "author": "",
   "license": "ISC",
