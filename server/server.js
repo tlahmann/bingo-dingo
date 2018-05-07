@@ -37,8 +37,8 @@ wss.on('listening', function () {
     })
 })
 
+const gm = new GameManager()
 const db = new DataBaser(dataBaseURL)
-const gm = new GameManager(db)
 const mh = new MessageHandler(gm, db)
 
 /// WebSocket Server
@@ -54,10 +54,10 @@ wss.on('connection', (ws, req) => {
     mh.sendPacket(ws, p.MESSAGE_SERVER_REJECT, {
       id: uuid.v4(),
       timestamp: new Date().getTime(),
-      message: 'Der Zugang wurde gesperrt!'
+      message: 'Der Zugang wurde für dich gesperrt!'
     })
     ws.close()
-  } else if (gm.users.filter(u => u.remoteAddress === req.connection.remoteAddress).length > 3) {
+  } else if (gm.users.filter(u => u.remoteAddress === req.connection.remoteAddress).length > 30) {
     mh.sendPacket(ws, p.MESSAGE_SERVER_REJECT, {
       id: uuid.v4(),
       timestamp: new Date().getTime(),

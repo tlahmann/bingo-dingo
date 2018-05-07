@@ -8,6 +8,10 @@ class Stats extends React.Component {
   }
 
   render () {
+    let bingosPlayers = (this.props.stats.bingosPlayers || []).map(u =>
+      (
+        <span key={u.id}>{u.nickname}, </span>
+      ))
     return (
       <div id="stats">
         <div className="row">
@@ -16,6 +20,22 @@ class Stats extends React.Component {
           </div>
           <div className="four columns">
             <strong>Anzahl</strong>
+          </div>
+        </div>
+        <div className="row">
+          <div className="eight columns">
+            Spieler online
+          </div>
+          <div className="four columns">
+            {this.props.stats.usersOnline}
+          </div>
+        </div>
+        <div className="row">
+          <div className="eight columns">
+            Nummern gezogen
+          </div>
+          <div className="four columns">
+            {this.props.stats.numbersDrawn}
           </div>
         </div>
         <div className="row">
@@ -48,6 +68,30 @@ class Stats extends React.Component {
           </div>
           <div className="four columns">
             {this.props.stats.oneToGo}
+          </div>
+        </div>
+        <div className="row">
+          <div className="eight columns">
+            Reihen in denen zwei Zahlen fehlen
+          </div>
+          <div className="four columns">
+            {this.props.stats.twoToGo}
+          </div>
+        </div>
+        <div className="row">
+          <div className="eight columns">
+            Hilfreichste Zahl
+          </div>
+          <div className="four columns">
+            {this.props.stats.common}
+          </div>
+        </div>
+        <div className="row">
+          <div className="eight columns">
+            Spieler, die ein Bingo haben
+          </div>
+          <div className="four columns">
+            {bingosPlayers || 'None'}
           </div>
         </div>
       </div>

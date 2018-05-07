@@ -19,6 +19,10 @@ export default class GameManager {
     }
   }
 
+  setNumbers (numbers) {
+    this.numbers = numbers
+  }
+
   getUserBySocket = (ws) => this.users.filter(u => u.client === ws).reduce(v => v)
   getUserByNickname = (nn) => this.users.filter(u => u.nickname === nn).reduce(v => v)
   getUserById = (id) => this.users.filter(u => u.id === id).reduce(v => v)

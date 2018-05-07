@@ -3,7 +3,7 @@ import MongoClient from 'mongodb'
 import hf from '../Modules/HelperFunctions'
 
 export default class DataBaser {
-  constructor (url) {
+  constructor (url, gm, sessionId) {
     let that = this
 
     MongoClient.connect(url, (err, db) => {

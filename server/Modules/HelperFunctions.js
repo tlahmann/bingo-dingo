@@ -171,7 +171,7 @@ export default class HelperFunctions {
     return dateFormat(date, 'isoDateTime')
   }
 
-  static * subsets (array, offset = 0) {
+  static* subsets (array, offset = 0) {
     while (offset < array.length) {
       let first = array[offset++]
       for (let subset of this.subsets(array, offset)) {
@@ -180,6 +180,25 @@ export default class HelperFunctions {
       }
     }
     yield []
+  }
+
+  static findCommon (arr, nums) {
+    if (arr.length === 0) {
+      return -1
+    }
+
+    let max = arr[0]
+    let maxIndex = 0
+
+    for (let i = 1; i < arr.length; i++) {
+      if (nums.some(n => +n.number === i)) continue
+      if (arr[i] > max) {
+        maxIndex = i
+        max = arr[i]
+      }
+    }
+
+    return maxIndex
   }
 }
 

@@ -60,12 +60,15 @@ export default class MessageHandler {
             number: n.number.number
           }
         })
+      this.gm.setNumbers(output)
       this.sendPacket(ws, p.MESSAGE_HISTORY, output)
     }).catch(err => {})
   }
 
   sendStats () {
     let stats = {}
+    stats['usersOnline'] = this.gm.users.length
+    stats['numbersDrawn'] = this.gm.numbers.length
     stats['completion'] = this.gm.users.reduce((s, u) => s + u.board.filter(b => b.isClicked).length, 0)
     stats['misses'] = this.gm.users
       .reduce((s, u) =>
@@ -81,6 +84,21 @@ export default class MessageHandler {
       .reduce((s, u) =>
         s + (hf.countMissing(u.board, u.lines, 4) || 0),
         0)
+    stats['twoToGo'] = this.gm.users
+      .reduce((s, u) =>
+        s + (hf.countMissing(u.board, u.lines, 3) || 0),
+        0)
+    let nums = new Array(75).fill(0)
+    this.gm.users.forEach(u => {
+      u.board.forEach(n => {
+        if (n.number != 'FREE')
+          nums[n.number]++
+      })
+    })
+    stats['common'] = hf.findCommon(nums, this.gm.numbers)
+    stats['bingosPlayers'] = this.gm.users.filter(u => u.bingos > 0).map(u => {
+      return {id: u.id, nickname: u.nickname}
+    })
     this.broadcast(p.MESSAGE_STATS, stats)
   }
 }
