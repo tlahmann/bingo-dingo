@@ -136,7 +136,6 @@ wss.on('connection', (ws, req) => {
           console.log('# %s: A returning player was fetched from the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
         } else {
           db.insertNewUser(me, session).then(() => {
-            console.log(me)
             console.log('# %s: A new player was added to the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
           }).catch(err => console.log(err))
         }

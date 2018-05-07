@@ -24,11 +24,6 @@ class Users extends React.Component {
     }))
   }
 
-  showDropdown (e) {
-    e.preventDefault()
-    document.getElementById('myDropdown').classList.toggle('show')
-  }
-
   render () {
     let btn = (id) => (this.props.moderating ?
       <div className="dropdown" style={{float: 'right'}}>
@@ -41,12 +36,13 @@ class Users extends React.Component {
     let admins = this.props.users.filter(u => u.role === 'admin')
     admins = admins.map(u =>
       (
-        <li className={'user'} key={u.id} style={{color: '#46b798'}}>&#9818; {u.nickname}</li>
+        <li className={'user'} key={u.id} style={{color: '#46b798'}}><i className="fas fa-chess-king"/> {u.nickname}
+        </li>
       ))
     let moderators = this.props.users.filter(u => u.role === 'moderator')
     moderators = moderators.map(u =>
       (
-        <li className={'user'} key={u.id} style={{color: '#5f84f1'}}>&#9733; {u.nickname}</li>
+        <li className={'user'} key={u.id} style={{color: '#5f84f1'}}><i className="fas fa-star"/> {u.nickname}</li>
       ))
 
     let registered = this.props.users.filter(u => u.nickname && u.role !== 'admin' && u.role !== 'moderator')

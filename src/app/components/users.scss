@@ -22,6 +22,14 @@ $font_0: sans-serif;
     font-family: $font_0;
     font-size: 1.0em;
     margin: 0;
+    * {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .fas {
+      width: 14px;
+      height: 14px;
+    }
     &.guest {
       color: $color_boulder_approx;
     }
