@@ -338,6 +338,7 @@ class App extends React.Component {
               <TabPanel>
                 <Users
                   users={this.state.userList}
+                  me={this.state.desiredName}
                   moderating={this.state.role === 'admin' || this.state.role === 'moderator'}
                   socket={this.socket}
                 />

@@ -36,19 +36,19 @@ class Users extends React.Component {
     let admins = this.props.users.filter(u => u.role === 'admin')
     admins = admins.map(u =>
       (
-        <li className={'user'} key={u.id} style={{color: '#46b798'}}><i className="fas fa-chess-king"/> {u.nickname}
+        <li className={'user admin'} key={u.id}><i className="fas fa-chess-king"/> {u.nickname}
         </li>
       ))
     let moderators = this.props.users.filter(u => u.role === 'moderator')
     moderators = moderators.map(u =>
       (
-        <li className={'user'} key={u.id} style={{color: '#5f84f1'}}><i className="fas fa-star"/> {u.nickname}</li>
+        <li className={'user moderator'} key={u.id}><i className="fas fa-star"/> {u.nickname}</li>
       ))
 
     let registered = this.props.users.filter(u => u.nickname && u.role !== 'admin' && u.role !== 'moderator')
     let users = registered.map(u =>
       (
-        <li className={'user'} key={u.id}>{u.nickname} {btn(u.id)}</li>
+        <li className={'user' + (u.nickname === this.props.me ? ' me' : '')} key={u.id}>{u.nickname} {btn(u.id)}</li>
       ))
 
     let unregistered = this.props.users.filter(u => !u.nickname)
