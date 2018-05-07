@@ -28,6 +28,12 @@ class Input extends React.Component {
     this.refs.messageInput.value = ''
   }
 
+  chooseWinner (e) {
+    e.preventDefault()
+    let arr = this.props.bingos
+    console.log(arr[Math.floor(Math.random() * arr.length)].nickname)
+  }
+
   render () {
     return (
       <div className="input">
@@ -36,6 +42,9 @@ class Input extends React.Component {
           <input autoComplete={'off'} ref="numInput" type="number" min="1" max="75" name="number" id="number"
                  className="four columns"/>
           <button type="submit">Senden</button>
+        </form>
+        <form onSubmit={(e) => this.chooseWinner(e)}>
+          <button type="submit">Gewinner Ermitteln</button>
         </form>
         <form onSubmit={(e) => this.sendMessage(e)}>
           <label htmlFor="chat-input">Nachricht an alle</label>

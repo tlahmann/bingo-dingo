@@ -325,7 +325,7 @@ class App extends React.Component {
                 <Tab>Spieler</Tab>
                 <Tab>Statistik</Tab>
                 <Tab>Regeln</Tab>
-                {this.state.role === 'admin' ? <Tab>Zahlen eingeben</Tab> : []}
+                {this.state.role === 'admin' ? <Tab>Interaktion</Tab> : []}
                 {this.state.role === 'admin' ? <Tab>Zurücksetzten</Tab> : []}
               </TabList>
 
@@ -375,6 +375,7 @@ class App extends React.Component {
               {this.state.role === 'admin' ? <TabPanel>
                   <Input
                     socket={this.socket}
+                    bingos={this.state.stats.bingosPlayers}
                   />
                 </TabPanel>
                 : []}
