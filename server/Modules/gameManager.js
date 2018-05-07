@@ -20,6 +20,8 @@ export default class GameManager {
   }
 
   getUserBySocket = (ws) => this.users.filter(u => u.client === ws).reduce(v => v)
+  getUserByNickname = (nn) => this.users.filter(u => u.nickname === nn).reduce(v => v)
+  getUserById = (id) => this.users.filter(u => u.id === id).reduce(v => v)
 
   removeSocket (ws) {
     let index = this.users.indexOf(this.getUserBySocket(ws))

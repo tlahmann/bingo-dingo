@@ -61,7 +61,7 @@ export default class DataBaser {
   insertNewUser (user) {
     let u = {
       nickname: user.nickname,
-      role: user.isAdmin ? 'admin' : 'user'
+      role: user.role
     }
     return this.Users.insertOne(u)
       .then(() => { }, (err) => { throw err })

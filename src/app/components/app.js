@@ -193,7 +193,6 @@ class App extends React.Component {
 
   onClick () {
     if (this.state.desiredNameValid && !this.state.passwordRequired && !this.state.pending) {
-      console.log(this.state.desiredName)
       this.sendPacket(p.MESSAGE_REQUEST_NICKNAME, {nickname: this.state.desiredName})
       this.state.pending = true
     } else {
@@ -340,6 +339,7 @@ class App extends React.Component {
                 <Users
                   users={this.state.userList}
                   moderating={this.state.role === 'admin' || this.state.role === 'moderator'}
+                  socket={this.socket}
                 />
               </TabPanel>
               <TabPanel>

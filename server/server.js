@@ -8,7 +8,7 @@ import User from './Classes/User'
 import WebSocket from 'ws'
 import p from './protocol'
 import hf from './Modules/HelperFunctions'
-import { getLastLine, appendLine } from './Modules/fileTools'
+import { appendLine, getLastLine } from './Modules/fileTools'
 import uuid from 'node-uuid'
 import path from 'path'
 
@@ -136,6 +136,7 @@ wss.on('connection', (ws, req) => {
           console.log('# %s: A returning player was fetched from the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
         } else {
           db.insertNewUser(me, session).then(() => {
+            console.log(me)
             console.log('# %s: A new player was added to the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
           }).catch(err => console.log(err))
         }
@@ -272,6 +273,33 @@ wss.on('connection', (ws, req) => {
               nickname: decoded.data.nickname,
               role: me.role
             })
+        }
+      }).catch(err => console.log(err))
+    }
+
+    if (decoded.type === p.MESSAGE_USER_KICK) {
+      if (!decoded.data.userId.length || !me.nickname) {
+        return
+      }
+      db.findUser(me.nickname).then(user => {
+        if (user && (user.role === 'admin' || user.role === 'moderator')) {
+          let kickedUser = gm.getUserById(decoded.data.userId)
+          kickedUser.client.close()
+          console.log('# %s: Player %s was kicked by user %s', hf.formatDate(new Date()), kickedUser.nickname, me.nickname)
+        }
+      }).catch(err => console.log(err))
+    }
+
+    if (decoded.type === p.MESSAGE_USER_BAN) {
+      if (!decoded.data.userId.length || !me.nickname) {
+        return
+      }
+      db.findUser(me.nickname).then(user => {
+        if (user && (user.role === 'admin' || user.role === 'moderator')) {
+          let bannedUser = gm.getUserById(decoded.data.userId)
+          bannedUser.client.close()
+          bannedIPs.push(bannedUser.remoteAddress)
+          console.log('# %s: Player %s was banned by user %s', hf.formatDate(new Date()), bannedUser.nickname, me.nickname)
         }
       }).catch(err => console.log(err))
     }
