@@ -8,6 +8,7 @@ body {
   background: #fff;
   border-radius: 4px;
   box-shadow: 3px 6px 25px #333;
+  z-index: 80;
 }
 
 ol, ul {
@@ -57,6 +58,10 @@ ol, ul {
   background-color: #b74665;
   color: white;
   font-weight: 600;
+}
+
+#github_banner{
+  z-index: 50;
 }
 
 #rules {

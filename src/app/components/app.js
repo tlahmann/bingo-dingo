@@ -300,12 +300,6 @@ class App extends React.Component {
   render () {
     return (
       <div id="app">
-        <a href="https://github.com/tlahmann/bingo-dingo" target="_blank">
-          <img id="github_banner"
-               style={{position: 'absolute', top: '0', right: '0', border: '0'}}
-               src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"
-               alt="Fork me on GitHub"/>
-        </a>
         <header className="row">
           <h1>Dicos Bingo</h1>
         </header>
