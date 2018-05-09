@@ -48,7 +48,7 @@ class Stats extends React.Component {
         </div>
         <div className="row">
           <div className="eight columns">
-            clickbare Felder
+            klickbare Felder
           </div>
           <div className="four columns">
             {this.props.stats.misses}
