@@ -16,14 +16,6 @@ class Stats extends React.Component {
       <div id="stats">
         <div className="row">
           <div className="eight columns">
-            <strong>Wert</strong>
-          </div>
-          <div className="four columns">
-            <strong>Anzahl</strong>
-          </div>
-        </div>
-        <div className="row">
-          <div className="eight columns">
             Spieler online
           </div>
           <div className="four columns">
