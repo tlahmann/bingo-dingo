@@ -46,6 +46,10 @@
 
   &__tab-panel {
     display: none;
+    max-height: 330px;
+    min-height: 330px;
+    overflow-y: scroll;
+    margin: 20px 0;
 
     &--selected {
       display: block;

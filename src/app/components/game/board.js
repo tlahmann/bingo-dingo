@@ -2,7 +2,7 @@ import React from 'react'
 import './board.scss'
 import Square from './square'
 
-import p from '../../../server/protocol'
+import p from '../../../../server/protocol'
 
 class Board extends React.Component {
   constructor (props) {

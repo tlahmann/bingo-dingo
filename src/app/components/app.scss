@@ -1,46 +1,46 @@
+// SCSS document
+// app.scss
+// -------------------------------------------------
+@import "../style/colors";
+
 body {
   font: 16px 'Didact Gothic', Roboto, Futura, sans-serif;
   margin: 6.25% auto;
+  @media (min-width: 400px) {
+    margin: 2.5% auto;
+  }
+  color: $colorFontMain;
+}
+
+.container {
+  max-width: 1240px;
+  @media (min-width: 400px) {
+    width: 95%;
+  }
 }
 
 #app {
   padding: 2rem;
   background: #fff;
   border-radius: 4px;
-  box-shadow: 3px 6px 25px #333;
+  box-shadow: 3px 6px 25px $colorFontMain;
   z-index: 80;
+  #game-info {
+    h5 {
+      margin-bottom: 0.5rem;
+    }
+    li {
+      margin-bottom: 0;
+    }
+  }
 }
 
 ol, ul {
   padding-left: 30px;
 }
 
-.status {
-  margin-bottom: 10px;
-}
-
-.game {
-  z-index: 99;
-}
-
-#game-info {
-  h5 {
-    margin-bottom: 0.5rem;
-  }
-  li {
-    margin-bottom: 0;
-  }
-}
-
 .ReactModal__Overlay {
   z-index: 100;
-}
-
-.react-tabs__tab-panel {
-  max-height: 330px;
-  min-height: 330px;
-  overflow-y: scroll;
-  margin: 20px 0;
 }
 
 #errorMessage {
@@ -51,8 +51,8 @@ ol, ul {
 }
 
 .login-btn {
-  background-color: white;
-  color: black;
+  background-color: $colorFontContrast;
+  color: $colorFontMain;
   border: none;
   font-size: 1.7rem;
   font-weight: 400;
@@ -60,13 +60,9 @@ ol, ul {
 }
 
 .danger {
-  background-color: #b74665;
-  color: white;
+  background-color: $colorMain5;
+  color: $colorFontContrast;
   font-weight: 600;
-}
-
-#github_banner {
-  z-index: 50;
 }
 
 #rules {

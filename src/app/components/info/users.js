@@ -1,7 +1,7 @@
 import React from 'react'
 import './users.scss'
 import './react-tabs.scss'
-import p from '../../../server/protocol'
+import p from '../../../../server/protocol'
 
 class Users extends React.Component {
   constructor (props) {

@@ -1,7 +1,7 @@
 import React from 'react'
 import './input.scss'
 
-import p from '../../../server/protocol'
+import p from '../../../../server/protocol'
 
 class Input extends React.Component {
   constructor (props) {

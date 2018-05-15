@@ -4,14 +4,14 @@ import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
 import validator from 'validator'
 
 import p from '../../../server/protocol'
-import Board from './board'
-import Input from './input'
-import History from './history'
-import Users from './users'
-import Stats from './stats'
+import Board from './game/board'
+import Input from './info/input'
+import History from './info/history'
+import Users from './info/users'
+import Stats from './info/stats'
 
 import './app.scss'
-import './react-tabs.scss'
+import './info/react-tabs.scss'
 
 const loginStyle = {
   content: {
