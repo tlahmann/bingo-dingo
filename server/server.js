@@ -130,25 +130,19 @@ wss.on('connection', (ws, req) => {
       let shouldAuthenticate = false
       // See if we can find a user in the database
       DataBaser.findUser(decoded.data.nickname)
-        .then(user => {
-          if (user) {
+        .then(results => {
+          if (results.docs.length !== 0) {
+            let user = results.docs[0]
             me.nickname = user.nickname
-            shouldAuthenticate = user.password || me.shouldAuthenticate()
+            if (user.password || me.shouldAuthenticate()) throw new AuthenticationError()
             console.log('# %s: A returning player was fetched from the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
           } else {
             db.insertNewUser(me, session).then(() => {
               console.log('# %s: A new player was added to the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
             }).catch(err => console.log(err))
           }
-
-          if (shouldAuthenticate) {
-            mh.sendPacket(ws, p.MESSAGE_AUTHENTICATE, null)
-            return
-          }
-          else {
-            mh.sendPacket(ws, p.MESSAGE_NICKNAME_GRANTED, null)
-          }
-
+        })
+        .then(() => {
           mh.broadcast(
             p.MESSAGE_USER_STATE_CHANGE,
             {
@@ -157,12 +151,11 @@ wss.on('connection', (ws, req) => {
               role: me.role
             })
         })
-        .catch(function (err) {
-          console.log('# %s: A mongo error occured: %s', hf.formatDate(new Date()), err.message)
-        })
-        .then(DataBaser.findBoard(me.nickname, session))
-        .then(board => {
-          if (board) {
+        .then(() => DataBaser.findBoard(me.nickname, session))
+        .then(results => {
+          console.log(results)
+          if (results.docs.length !== 0) {
+            let board = results.docs[0]
             me.board = board.board
             me.bingos = hf.countBingos(me.board, me.lines)
             me.lines = hf.clearLines(me.board, me.lines)
@@ -175,7 +168,11 @@ wss.on('connection', (ws, req) => {
           }
         })
         .catch(function (err) {
-          console.log('# %s: A mongo error occured: %s', hf.formatDate(new Date()), err.message)
+          if (err instanceof AuthenticationError) {
+            mh.sendPacket(ws, p.MESSAGE_AUTHENTICATE, null)
+          } else {
+            console.log('# %s: A mongo error occured: %s', hf.formatDate(new Date()), err.message)
+          }
         })
     }
 
@@ -306,6 +303,13 @@ wss.on('connection', (ws, req) => {
     }
   })
 })
+
+export class AuthenticationError extends Error {
+  constructor () {
+    super() // (1)
+    this.name = 'AuthenticationError' // (2)
+  }
+}
 
 setInterval(function stats () {
   wss.clients.forEach(function each (ws) {
