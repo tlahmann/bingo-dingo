@@ -371,6 +371,10 @@ class App extends React.Component {
                       Verlosung teilnehmen zu dürfen muss der Spieler im Bingo online sein. Unter allen anwesenden
                       Spielern, die ein Bingo erreicht haben wird ein Gewinner ausgelost.
                     </li>
+                    <li className="twelve columns">
+                      Die Admins und Moderatoren behalten sich das Recht vor Spieler ohne Angabe von Gründen vom Spiel
+                      zu entfernen oder gänzlich auszuschließen.
+                    </li>
                   </ul>
                 </div>
               </TabPanel>}
@@ -390,12 +394,12 @@ class App extends React.Component {
                aria-label="Fork tlahmann/bingo-dingo on GitHub">
               <img height='36' style={{border: '0px', height: '36px'}}
                    src='./github_fork.png'
-                   border='0' alt='Fork this Project on GitHub'/>
+                   border='0' alt='Fork this Project on GitHub' />
             </a>
             <a href='https://ko-fi.com/E1E5C1W2' target='_blank' className="u-pull-right">
               <img height='36' style={{border: '0px', height: '36px'}}
                    src='https://az743702.vo.msecnd.net/cdn/kofi5.png?v=0'
-                   border='0' alt='Buy Me a Coffee at ko-fi.com'/>
+                   border='0' alt='Buy Me a Coffee at ko-fi.com' />
             </a>
           </div>
         </div>
@@ -413,7 +417,7 @@ class App extends React.Component {
                      type="text"
                      name="nickname"
                      id="nickname"
-                     className="ten columns"/>
+                     className="ten columns" />
             </div>
             {
               this.state.requireLogin ? <div className="row">
@@ -422,7 +426,7 @@ class App extends React.Component {
                        type="password"
                        name="password"
                        id="password"
-                       className="ten columns"/>
+                       className="ten columns" />
               </div> : []
             }
             <div className="row">

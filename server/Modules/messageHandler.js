@@ -82,8 +82,7 @@ export default class MessageHandler {
         0)
     stats['bingos'] = users.reduce((s, u) => s + u.bingos, 0)
     stats['oneToGo'] = users
-      .reduce((s, u) =>
-        s + (hf.countMissing(u.board, u.lines, 4) || 0),
+      .reduce((s, u) => s + (hf.countMissing(u.board, u.lines, 4) || 0),
         0)
     stats['twoToGo'] = users
       .reduce((s, u) =>
@@ -92,9 +91,11 @@ export default class MessageHandler {
     let nums = new Array(75).fill(0)
     users.forEach(u => {
       u.board.forEach(n => {
-        if (n.number != 'FREE')
+        if (n.number !== 'FREE')
           nums[n.number]++
       })
+      let importantNumbers = hf.getMissing(u.board, u.lines, 4)
+      importantNumbers.forEach(n => {if (n) nums[n]+=2 })
     })
     stats['common'] = hf.findCommon(nums, this.gm.numbers)
     stats['bingosPlayers'] = users.filter(u => u.bingos > 0).map(u => {

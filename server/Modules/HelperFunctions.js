@@ -170,6 +170,23 @@ export default class HelperFunctions {
     }).reduce((s, b) => s + (b || 0), 0)
   }
 
+  static getMissing (squares, lines, length = 4) {
+    // go through all possible lines
+    return lines.map(l => {
+      for (let subset of this.subsets(l)) {
+        // go through all subsets of this line of specified length
+        if (subset.length === length) {
+          // if every square of this line is clicked we'll return the line
+          if (subset.every(i => squares[i].isClicked)) {
+            return squares[l.filter(n => {
+              return subset.indexOf(n) === -1
+            }).reduce(v => v)].number
+          }
+        }
+      }
+    })
+  }
+
   static formatDate (date) {
     return dateFormat(date, 'isoDateTime')
   }

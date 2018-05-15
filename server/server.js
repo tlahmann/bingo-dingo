@@ -296,7 +296,11 @@ wss.on('connection', (ws, req) => {
           let bannedUser = gm.getUserById(decoded.data.userId)
           bannedUser.client.close()
           bannedIPs.push(bannedUser.remoteAddress)
-          console.log('# %s: Player %s was banned by user %s', hf.formatDate(new Date()), bannedUser.nickname, me.nickname)
+          console.log('# %s: Player %s with ip %s was banned by user %s',
+            hf.formatDate(new Date()),
+            bannedUser.nickname,
+            bannedUser.remoteAddress.toString(),
+            me.nickname)
         }
       }).catch(err => console.log(err))
     }

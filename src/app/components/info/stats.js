@@ -14,7 +14,8 @@ class Stats extends React.Component {
       ))
     return (
       <div id="stats">
-        <div className="row">
+        <div className="row"
+             title="Die Anzahl der Spieler, die aktuell mit dem Spiel verbunden sind und einen Namen angegeben haben (keine Gäste)">
           <div className="eight columns">
             Spieler online
           </div>
@@ -22,7 +23,7 @@ class Stats extends React.Component {
             {this.props.stats.usersOnline}
           </div>
         </div>
-        <div className="row">
+        <div className="row" title="Die Anzahl der in diesem Spiel gezogenen Nummern">
           <div className="eight columns">
             Nummern gezogen
           </div>
@@ -30,7 +31,7 @@ class Stats extends React.Component {
             {this.props.stats.numbersDrawn}
           </div>
         </div>
-        <div className="row">
+        <div className="row" title="Die Anzahl der Felder, die insgesamt Spielern markiert wurden">
           <div className="eight columns">
             geklickte Felder
           </div>
@@ -38,7 +39,7 @@ class Stats extends React.Component {
             {this.props.stats.completion}
           </div>
         </div>
-        <div className="row">
+        <div className="row" title="Die Anzahl der Felder, welche geklickt werden könnten, es aber nicht sind">
           <div className="eight columns">
             klickbare Felder
           </div>
@@ -46,7 +47,7 @@ class Stats extends React.Component {
             {this.props.stats.misses}
           </div>
         </div>
-        <div className="row">
+        <div className="row" title="Die Anzahl der Bingos von aktiven Spielern">
           <div className="eight columns">
             Bingos
           </div>
@@ -54,7 +55,7 @@ class Stats extends React.Component {
             {this.props.stats.bingos}
           </div>
         </div>
-        <div className="row">
+        <div className="row" title="Die Anzahl der Reihen in der eine Zahl zum Bingo fehlt">
           <div className="eight columns">
             Reihen in denen eine Zahl fehlt
           </div>
@@ -62,7 +63,7 @@ class Stats extends React.Component {
             {this.props.stats.oneToGo}
           </div>
         </div>
-        <div className="row">
+        <div className="row" title="Die Anzahl der Reihen in der zwei Zahlen zum Bingo fehlen">
           <div className="eight columns">
             Reihen in denen zwei Zahlen fehlen
           </div>
@@ -70,7 +71,7 @@ class Stats extends React.Component {
             {this.props.stats.twoToGo}
           </div>
         </div>
-        <div className="row">
+        <div className="row" title="Die Zahl, die den meisten Spielern weiterhilft">
           <div className="eight columns">
             Hilfreichste Zahl
           </div>
@@ -78,7 +79,7 @@ class Stats extends React.Component {
             {this.props.stats.common}
           </div>
         </div>
-        <div className="row">
+        <div className="row" title="Liste aktiver Spieler, die ein Bingo erreicht haben">
           <div className="eight columns">
             Spieler, die ein Bingo haben
           </div>
