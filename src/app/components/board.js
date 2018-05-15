@@ -52,7 +52,16 @@ class Board extends React.Component {
     for (let i = 0; i < 5; i++) {
       rows.push(this.renderRow(i))
     }
-    return <div>{rows}</div>
+    return (<div>
+      <div className="board-row" key="header">
+        <div className="header-square">B</div>
+        <div className="header-square">I</div>
+        <div className="header-square">N</div>
+        <div className="header-square">G</div>
+        <div className="header-square">O</div>
+      </div>
+      {rows}
+    </div>)
   }
 }
 

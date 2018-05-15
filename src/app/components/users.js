@@ -58,7 +58,6 @@ class Users extends React.Component {
 
     return (
       <div id="users">
-        Spieler
         <ul ref="list">
           {admins || 'None'}
           {moderators || 'None'}

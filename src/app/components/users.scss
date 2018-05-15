@@ -1,3 +1,5 @@
+@import "../style/colors";
+
 //colors
 $white: #ffffff;
 $color_boulder_approx: #797979;
@@ -41,16 +43,23 @@ $font_0: sans-serif;
     }
   }
 
-  .admin{color: #46b798}
-  .moderator{color: #5f84f1}
-  .me{color: #bf2e31}
+  .admin {
+    color: $colorMain1;
+  }
+  .moderator {
+    color: $colorMain2;
+  }
+  .me {
+    color: $colorMain3;
+  }
 
   .kickBtn, .kickButton {
     outline: none;
     border: none;
-    font-size: 1em;
     margin: 0;
     cursor: pointer;
+    height: 30px;
+    line-height: 30px;
   }
 
   #myDropdown {

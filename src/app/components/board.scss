@@ -1,5 +1,35 @@
+@import "../style/colors";
+
 .board-row:after {
   clear: both;
   content: "";
   display: table;
+}
+
+.header-square {
+  position: relative;
+  background: #fff;
+  border-radius: 0;
+  float: left;
+  font-size: 160%;
+  font-weight: 700;
+  width: 20%;
+  margin: 0;
+  text-align: center;
+  padding: 1% 0;
+  &:nth-child(1) {
+    background-color: $colorMain1;
+  }
+  &:nth-child(2) {
+    background-color: $colorMain2;
+  }
+  &:nth-child(3) {
+    background-color: $colorMain3;
+  }
+  &:nth-child(4) {
+    background-color: $colorMain4;
+  }
+  &:nth-child(5) {
+    background-color: $colorMain5;
+  }
 }

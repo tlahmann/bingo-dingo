@@ -6,8 +6,10 @@ class Square extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      topOffset: Math.floor(Math.random() * (8 - 3 + 1)) + 3 + '%',
-      leftOffset: Math.floor(Math.random() * (18 - 8 + 1)) + 8 + '%'
+      // topOffset: Math.floor(Math.random() * (8 - 3 + 1)) + 3 + '%',
+      // leftOffset: Math.floor(Math.random() * (18 - 8 + 1)) + 8 + '%'
+      topOffset: 12 + '%',
+      leftOffset: 12 + '%'
     }
   }
 

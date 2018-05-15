@@ -1,0 +1,24 @@
+﻿// SCSS document
+// Mixins
+// -------------------------------------------------
+
+// Yep, taken right from bourbon - https://github.com/thoughtbot/bourbon/blob/master/dist/addons/_prefixer.scss
+// @prefixer ( string $property, mixed $value, list $prefixes )
+@mixin prefixer(
+    $property,
+    $value,
+    $prefixes: ()
+  ) {
+
+  @each $prefix in $prefixes {
+    #{"-" + $prefix + "-" + $property}: $value;
+  }
+  #{$property}: $value;
+}
+
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  // IE8 filter
+  $opacity-ie: ($opacity * 100);
+  filter: alpha(opacity=$opacity-ie);
+}

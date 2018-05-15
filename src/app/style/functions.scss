@@ -1,0 +1,20 @@
+﻿// SCSS document
+// Functions
+// -------------------------------------------------
+
+@import "variables";
+
+// Convert pixel to em
+@function em($pixels, $context: $browser-context) {
+  @return #{$pixels/$context}em;
+}
+
+// Convert pixel to rem
+@function rem($pixels, $context: $browser-context) {
+  @return #{$pixels/$context}rem;
+}
+
+// Convert a value to pixel pixel to rem
+@function px($pixels) {
+  @return #{$pixels}px;
+}

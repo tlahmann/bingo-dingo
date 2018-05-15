@@ -22,7 +22,7 @@ const loginStyle = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     zIndex: '100',
-    backgroundColor: 'rgb(70, 183, 152)'
+    backgroundColor: 'rgb(77, 175, 74)'
   }
 }
 
@@ -35,7 +35,7 @@ const bannedStyle = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)',
     zIndex: '100',
-    backgroundColor: 'rgb(183, 70, 90)'
+    backgroundColor: 'rgb(228, 26, 28)'
   }
 }
 
@@ -304,14 +304,14 @@ class App extends React.Component {
           <h1>Dicos Bingo</h1>
         </header>
         <div className="game row">
-          <div className="game-board seven columns">
+          <div className="game-board six columns">
             <Board
               socket={this.socket}
               board={this.state.board}
               numberLog={this.state.numberLog}
             />
           </div>
-          <div id="game-info" className="game-info five columns">
+          <div id="game-info" className="game-info six columns">
             <h5>Spielinfo</h5>
             <Tabs>
               <TabList>
@@ -344,7 +344,6 @@ class App extends React.Component {
               </TabPanel>
               {<TabPanel>
                 <div id="rules">
-                  Spielregeln
                   <ul className="row">
                     <li className="twelve columns">
                       Im Bingo existieren 75 durchnummerierte Kugeln (1-75)
@@ -361,11 +360,16 @@ class App extends React.Component {
                       allzugroßen Vorteil haben. Dies wird durch einen Timer in der Historie angezeigt.
                     </li>
                     <li className="twelve columns">
-                      Gewonnen hat der Spieler, der zuerst eine vertikale, horizontale oder diagonale Linie auf seinem
-                      Spielfeld markiert hat
+                      Ein Bingo wird erreicht, wenn ein Spieler eine vertikale, horizontale oder diagonale Linie auf
+                      seinem Spielfeld markiert hat
                     </li>
                     <li className="twelve columns">
-                      Nachdem ein Bingo erreicht wurde dürfen alle Spieler weiterspielen
+                      Ein Bingo bedeutet nicht, dass das Spiel vorbei ist. Alle können weiter mitspielen.
+                    </li>
+                    <li className="twelve columns">
+                      Fall es von Dico angekündigt ist, wird am Ende eines Streams ein Preis verlost. Um an der
+                      Verlosung teilnehmen zu dürfen muss der Spieler im Bingo online sein. Unter allen anwesenden
+                      Spielern, die ein Bingo erreicht haben wird ein Gewinner ausgelost.
                     </li>
                   </ul>
                 </div>
@@ -381,11 +385,16 @@ class App extends React.Component {
                   <button type="submit" className="danger" onClick={(e) => this.reset(e)}>Zurücksetzen</button>
                 </TabPanel>
                 : []}
-              {/*TODO: Add how to play*/}
             </Tabs>
+            <a href="https://github.com/tlahmann/bingo-dingo" target='_blank' className="u-pull-left"
+               aria-label="Fork tlahmann/bingo-dingo on GitHub">
+              <img height='36' style={{border: '0px', height: '36px'}}
+                   src='./github_fork.png'
+                   border='0' alt='Fork this Project on GitHub'/>
+            </a>
             <a href='https://ko-fi.com/E1E5C1W2' target='_blank' className="u-pull-right">
               <img height='36' style={{border: '0px', height: '36px'}}
-                   src='https://az743702.vo.msecnd.net/cdn/kofi4.png?v=0'
+                   src='https://az743702.vo.msecnd.net/cdn/kofi5.png?v=0'
                    border='0' alt='Buy Me a Coffee at ko-fi.com'/>
             </a>
           </div>

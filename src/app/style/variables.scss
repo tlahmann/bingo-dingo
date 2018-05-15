@@ -1,0 +1,8 @@
+﻿// SCSS document
+// Variables
+// -------------------------------------------------
+
+// Used for function em(2). You can either use the default context and specify only the pixels you want to convert
+//                                            — or you can specify pixels and a custom context for the conversion.
+$browser-context: 16; // Default
+

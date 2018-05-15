@@ -19,12 +19,17 @@ ol, ul {
   margin-bottom: 10px;
 }
 
-.game{
+.game {
   z-index: 99;
 }
 
-.game-info li {
-  margin-bottom: 0;
+#game-info {
+  h5 {
+    margin-bottom: 0.5rem;
+  }
+  li {
+    margin-bottom: 0;
+  }
 }
 
 .ReactModal__Overlay {
@@ -32,10 +37,10 @@ ol, ul {
 }
 
 .react-tabs__tab-panel {
-  height: 100%;
-  max-height: 200px;
-  min-height: 200px;
+  max-height: 330px;
+  min-height: 330px;
   overflow-y: scroll;
+  margin: 20px 0;
 }
 
 #errorMessage {
@@ -60,7 +65,7 @@ ol, ul {
   font-weight: 600;
 }
 
-#github_banner{
+#github_banner {
   z-index: 50;
 }
 
@@ -69,9 +74,10 @@ ol, ul {
     height: 100%;
     max-height: 100%;
     padding-left: 20px;
+    list-style-type: initial;
     li {
       list-style-position: outside;
-      margin-bottom: 10px;
+      margin-bottom: 0.5rem;
     }
   }
 }

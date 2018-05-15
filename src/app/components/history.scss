@@ -1,13 +1,12 @@
+@import "../style/colors";
+
 //colors
-$white: #ffffff;
-$color_boulder_approx: #797979;
 $color_bon_jour_approx: #e2e2e2;
 
 //fonts
 $font_0: sans-serif;
 
 #history {
-  background: $white;
   height: 100%;
   max-height: 100%;
   ul {
@@ -24,7 +23,7 @@ $font_0: sans-serif;
     margin: 0;
 
     &.guest {
-      color: $color_boulder_approx;
+      color: $colorFontShade;
     }
     &.user {
       font-weight: bold;
@@ -35,7 +34,7 @@ $font_0: sans-serif;
   }
 
   strong {
-    color: #bf2e31;
+    color: $colorMain5;
   }
 }
 

@@ -38,19 +38,23 @@ class Input extends React.Component {
     return (
       <div className="input">
         <form onSubmit={(e) => this.sendNumber(e)}>
-          <label htmlFor="chat-input">Neue Zahl</label>
-          <input autoComplete={'off'} ref="numInput" type="number" min="1" max="75" name="number" id="number"
-                 className="four columns"/>
-          <button type="submit">Senden</button>
+          <label htmlFor="chat-input" className="row">Neue Zahl</label>
+          <div className="row">
+            <input autoComplete={'off'} ref="numInput" type="number" min="1" max="75" name="number" id="number"
+                   className="six columns"/>
+            <button type="submit" className="six columns">Senden</button>
+          </div>
+        </form>
+        <form onSubmit={(e) => this.sendMessage(e)}>
+          <label htmlFor="chat-input" className="row">Nachricht an alle</label>
+          <div className="row">
+            <input autoComplete={'off'} ref="messageInput" type="text" name="message" id="message"
+                   className="six columns"/>
+            <button type="submit" className="six columns">Senden</button>
+          </div>
         </form>
         <form onSubmit={(e) => this.chooseWinner(e)}>
           <button type="submit">Gewinner Ermitteln</button>
-        </form>
-        <form onSubmit={(e) => this.sendMessage(e)}>
-          <label htmlFor="chat-input">Nachricht an alle</label>
-          <input autoComplete={'off'} ref="messageInput" type="text" name="message" id="message"
-                 className="four columns"/>
-          <button type="submit">Senden</button>
         </form>
       </div>
     )
