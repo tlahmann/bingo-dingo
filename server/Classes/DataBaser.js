@@ -1,76 +1,40 @@
 'use strict'
-import MongoClient from 'mongodb'
 import hf from '../Modules/HelperFunctions'
+import mongoose from 'mongoose'
+import bluebird from 'bluebird'
+import UsersService from '../services/users.service'
+import BoardsService from '../services/boards.servce'
 
 export default class DataBaser {
   constructor (url, gm, sessionId) {
     let that = this
 
-    MongoClient.connect(url, (err, db) => {
-      if (err) throw err
-      let dbo = that.dbo = db.db('bingo-dingo')
-      that.Users = dbo.collection('users')
-      that.Boards = dbo.collection('boards')
-      that.Numbers = dbo.collection('numbers')
-      console.log('# %s: Database connection established. Database: bingo-dingo.', hf.formatDate(new Date()))
-      console.log('')
-    })
-  }
-
-  findUser (nickname) {
-    return this.Users.findOne({'nickname': nickname})
-      .then((user) => {
-        if (user) {
-          // user exists, you can throw an error if you want
-          return user
-          // throw new Error('User already exists!')
-        }
-        // user doesn't exist, all is good in your case
-        return null
-      }, function (err) {
-        // handle mongoose errors here if needed
-
-        // rethrow an error so the caller knows about it
-        // throw new Error('Some Mongoose error happened!')
-        throw err
-        // or throw err; if you want the caller to know exactly what happened
+    mongoose.Promise = bluebird
+    mongoose.connect(url + 'bingo-dingo')
+      .then(() => {
+        /* let dbo = that.dbo = db.db('bingo-dingo')
+         that.Users = dbo.collection('users')
+         that.Boards = dbo.collection('boards')
+         that.Numbers = dbo.collection('numbers')*/
+        console.log('# %s: Database connection established. Database: mongodb://127.0.0.1:27017/bingo-dingo.', hf.formatDate(new Date()))
       })
+      .catch(() => { console.log('# %s: Error Connecting to the Mongodb Database at URL: mongodb://127.0.0.1:27017/bingo-dingo.', hf.formatDate(new Date()))})
   }
 
-  authUser (nickname, password) {
-    return this.Users.findOne({'nickname': nickname, 'password': password})
-      .then((user) => {
-        if (user) {
-          // user exists, you can throw an error if you want
-          console.log('# %s: An admin was authenticated by the database: %s', hf.formatDate(new Date()), nickname)
-          return user
-          // throw new Error('User already exists!')
-        }
-        // user doesn't exist, all is good in your case
-        return null
-      }, function (err) {
-        // handle mongoose errors here if needed
-
-        // rethrow an error so the caller knows about it
-        // throw new Error('Some Mongoose error happened!')
-        throw err
-        // or throw err; if you want the caller to know exactly what happened
-      })
-  }
-
-  insertNewUser (user) {
-    let u = {
-      nickname: user.nickname,
-      role: user.role
+  static async findUser (nickname, password) {
+    const query = {nickname: nickname}
+    if (password) {
+      query.password = password
     }
-    return this.Users.insertOne(u)
-      .then(() => { }, (err) => { throw err })
+    return await UsersService.getUsers(query, 1, 1)
   }
 
-  findBoard (userName, sessionId) {
-    return this.Boards.findOne(
-      {'nickname': userName, 'session': sessionId}
-    ).then(board => board, (err) => { throw err })
+  static async insertNewUser (user) {
+    return await UsersService.createUser(user)
+  }
+
+  static async findBoard (userName, sessionId) {
+    return await BoardsService.getBoards({nickname: userName, session: sessionId}, 1, 1)
   }
 
   insertNewBoard (user, session) {

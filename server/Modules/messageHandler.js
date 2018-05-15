@@ -51,7 +51,7 @@ export default class MessageHandler {
   }
 
   sendHistory (ws, sessionId) {
-    this.db.getNumbers(sessionId).then(numbers => {
+    /*this.db.getNumbers(sessionId).then(numbers => {
       let output = numbers
         .map(n => {
           return {
@@ -62,7 +62,7 @@ export default class MessageHandler {
         })
       this.gm.setNumbers(output)
       this.sendPacket(ws, p.MESSAGE_HISTORY, output)
-    }).catch(err => {})
+    }).catch(err => {})*/
   }
 
   sendStats () {

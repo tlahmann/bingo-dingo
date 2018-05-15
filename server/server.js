@@ -129,36 +129,39 @@ wss.on('connection', (ws, req) => {
 
       let shouldAuthenticate = false
       // See if we can find a user in the database
-      db.findUser(decoded.data.nickname).then((user) => {
-        if (user) {
-          me.nickname = user.nickname
-          shouldAuthenticate = user.password || me.shouldAuthenticate()
-          console.log('# %s: A returning player was fetched from the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
-        } else {
-          db.insertNewUser(me, session).then(() => {
-            console.log('# %s: A new player was added to the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
-          }).catch(err => console.log(err))
-        }
+      DataBaser.findUser(decoded.data.nickname)
+        .then(user => {
+          if (user) {
+            me.nickname = user.nickname
+            shouldAuthenticate = user.password || me.shouldAuthenticate()
+            console.log('# %s: A returning player was fetched from the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
+          } else {
+            db.insertNewUser(me, session).then(() => {
+              console.log('# %s: A new player was added to the database: %s', hf.formatDate(new Date()), decoded.data.nickname)
+            }).catch(err => console.log(err))
+          }
 
-        if (shouldAuthenticate) {
-          mh.sendPacket(ws, p.MESSAGE_AUTHENTICATE, null)
-          return
-        }
-        else {
-          mh.sendPacket(ws, p.MESSAGE_NICKNAME_GRANTED, null)
-        }
+          if (shouldAuthenticate) {
+            mh.sendPacket(ws, p.MESSAGE_AUTHENTICATE, null)
+            return
+          }
+          else {
+            mh.sendPacket(ws, p.MESSAGE_NICKNAME_GRANTED, null)
+          }
 
-        mh.broadcast(
-          p.MESSAGE_USER_STATE_CHANGE,
-          {
-            id: me.id,
-            nickname: decoded.data.nickname,
-            role: me.role
-          })
-      }).catch(function (err) {
-        console.log('# %s: A mongo error occured: %s', hf.formatDate(new Date()), err.message)
-      }).then(
-        db.findBoard(me.nickname, session).then(board => {
+          mh.broadcast(
+            p.MESSAGE_USER_STATE_CHANGE,
+            {
+              id: me.id,
+              nickname: decoded.data.nickname,
+              role: me.role
+            })
+        })
+        .catch(function (err) {
+          console.log('# %s: A mongo error occured: %s', hf.formatDate(new Date()), err.message)
+        })
+        .then(DataBaser.findBoard(me.nickname, session))
+        .then(board => {
           if (board) {
             me.board = board.board
             me.bingos = hf.countBingos(me.board, me.lines)
@@ -170,16 +173,17 @@ wss.on('connection', (ws, req) => {
           if (!shouldAuthenticate) {
             mh.sendPacket(ws, p.MESSAGE_USER_BOARD, {board: me.board})
           }
-        })).catch(function (err) {
-        console.log('# %s: A mongo error occured: %s', hf.formatDate(new Date()), err.message)
-      })
+        })
+        .catch(function (err) {
+          console.log('# %s: A mongo error occured: %s', hf.formatDate(new Date()), err.message)
+        })
     }
 
     if (decoded.type === p.MESSAGE_NUMBER) {
       if (!decoded.message.length || !me.nickname) {
         return
       }
-      db.findUser(me.nickname).then(user => {
+      DataBaser.findUser(me.nickname).then(user => {
         if (user && user.role === 'admin') {
           let n = {
             id: uuid.v4(),
@@ -202,7 +206,7 @@ wss.on('connection', (ws, req) => {
       if (!decoded.message.length || !me.nickname) {
         return
       }
-      db.findUser(me.nickname).then(user => {
+      DataBaser.findUser(me.nickname).then(user => {
         if (user && user.role === 'admin') {
           mh.broadcast(p.MESSAGE_SERVER_MESSAGE, {
             id: uuid.v4(),
@@ -234,7 +238,7 @@ wss.on('connection', (ws, req) => {
 
     if (decoded.type === p.MESSAGE_GAME_RESET) {
       // console.log('Game reset send, ignoring...')
-      db.findUser(me.nickname).then(user => {
+      DataBaser.findUser(me.nickname).then(user => {
         if (user && user.role === 'admin') {
           session = uuid.v4()
           appendLine(fileName, session)
@@ -254,7 +258,7 @@ wss.on('connection', (ws, req) => {
     }
 
     if (decoded.type === p.MESSAGE_AUTHENTICATE) {
-      db.authUser(decoded.data.nickname, decoded.data.password).then((user) => {
+      DataBaser.findUser(decoded.data.nickname, decoded.data.password).then((user) => {
         if (user) {
           gm.getUserBySocket(ws).nickname = user.nickname
           me.setRole(user.role)
@@ -278,7 +282,7 @@ wss.on('connection', (ws, req) => {
       if (!decoded.data.userId.length || !me.nickname) {
         return
       }
-      db.findUser(me.nickname).then(user => {
+      DataBaser.findUser(me.nickname).then(user => {
         if (user && (user.role === 'admin' || user.role === 'moderator')) {
           let kickedUser = gm.getUserById(decoded.data.userId)
           kickedUser.client.close()
@@ -291,7 +295,7 @@ wss.on('connection', (ws, req) => {
       if (!decoded.data.userId.length || !me.nickname) {
         return
       }
-      db.findUser(me.nickname).then(user => {
+      DataBaser.findUser(me.nickname).then(user => {
         if (user && (user.role === 'admin' || user.role === 'moderator')) {
           let bannedUser = gm.getUserById(decoded.data.userId)
           bannedUser.client.close()

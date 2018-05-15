@@ -90,8 +90,8 @@ export default class HelperFunctions {
     if (h === 0 || w === 0) { return [] }
 
     /**
-     * @var {Number} i Counter
-     * @var {Number} j Counter
+     * @var {BNumber} i Counter
+     * @var {BNumber} j Counter
      * @var {Array} t Transposed data is stored in this array.
      */
     let t = []
