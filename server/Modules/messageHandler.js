@@ -91,7 +91,7 @@ export default class MessageHandler {
     let nums = new Array(75).fill(0)
     users.forEach(u => {
       u.board.forEach(n => {
-        if (n.number !== 'FREE')
+        if (n.number !== 'FREI')
           nums[n.number]++
       })
       let importantNumbers = hf.getMissing(u.board, u.lines, 4)

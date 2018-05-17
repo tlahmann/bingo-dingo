@@ -7,6 +7,7 @@ import p from '../../../server/protocol'
 import Board from './game/board'
 import Input from './info/input'
 import History from './info/history'
+import Numbers from './info/numbers'
 import Users from './info/users'
 import Stats from './info/stats'
 
@@ -316,6 +317,7 @@ class App extends React.Component {
             <Tabs>
               <TabList>
                 <Tab>Historie</Tab>
+                <Tab>Nummern</Tab>
                 <Tab>Spieler</Tab>
                 <Tab>Statistik</Tab>
                 <Tab>Regeln</Tab>
@@ -327,6 +329,11 @@ class App extends React.Component {
                 <History
                   numberLog={this.state.numberLog}
                   messageLog={this.state.messageLog}
+                />
+              </TabPanel>
+              <TabPanel>
+                <Numbers
+                  numberLog={this.state.numberLog}
                 />
               </TabPanel>
               <TabPanel>

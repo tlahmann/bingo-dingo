@@ -62,7 +62,7 @@ export default class HelperFunctions {
     }
 
     arr[2][2] = {
-      number: 'FREE',
+      number: 'FREI',
       isClicked: true
     }
 

@@ -1,0 +1,45 @@
+@import "../../style/colors";
+
+table {
+  width: 100%;
+  th {
+    padding: 0;
+    width: 20%;
+  }
+  td {
+    padding: 1% 0;
+    text-align: center;
+  }
+}
+
+.numbers-header-square {
+  border-radius: 0;
+  font-size: 160%;
+  font-weight: 700;
+  text-align: center;
+  &:nth-child(1) {
+    background-color: $colorMain1;
+  }
+  &:nth-child(2) {
+    background-color: $colorMain2;
+  }
+  &:nth-child(3) {
+    background-color: $colorMain3;
+  }
+  &:nth-child(4) {
+    background-color: $colorMain4;
+  }
+  &:nth-child(5) {
+    background-color: $colorMain5;
+  }
+}
+
+.selected {
+  &.active {
+    background-color: $colorMain1;
+  }
+
+  &.inactive {
+    background-color: $colorMain5;
+  }
+}
