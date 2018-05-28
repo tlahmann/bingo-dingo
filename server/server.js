@@ -308,7 +308,7 @@ wss.on('connection', (ws, req) => {
 })
 
 setInterval(function stats () {
-  wss.clients.forEach(function each (ws) {
-    mh.sendStats(ws)
-  })
+  // wss.clients.forEach(function each (ws) {
+    mh.sendStats()
+  // })
 }, 10000)
