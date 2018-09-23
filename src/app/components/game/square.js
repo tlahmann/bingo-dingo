@@ -15,7 +15,7 @@ class Square extends React.Component {
 
   render () {
     const clicked = this.props.value.isClicked ? (
-      <div className="clicked" style={{top: this.state.topOffset, left: this.state.leftOffset}}/>) : []
+      <div className='clicked' style={{ top: this.state.topOffset, left: this.state.leftOffset }} />) : []
     return (
       <button className='square' onClick={this.props.onClick}>
         {clicked}
