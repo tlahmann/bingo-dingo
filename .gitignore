@@ -310,5 +310,13 @@ modules.xml
 ## Dists
 /dist_server
 /dist_client
+/lib/**/*
 
 server/session.txt
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
