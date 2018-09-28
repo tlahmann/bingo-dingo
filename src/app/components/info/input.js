@@ -1,14 +1,17 @@
 import React from 'react'
 import './input.scss'
 
-import p from '../../../../server/protocol'
+import p from '../../protocol'
 
-class Input extends React.Component {
-  constructor (props) {
+class Input extends React.Component
+{
+  constructor (props)
+  {
     super(props)
   }
 
-  sendNumber (e) {
+  sendNumber (e)
+  {
     e.preventDefault()
     this.props.socket.send(JSON.stringify({
       type: p.MESSAGE_NUMBER,
@@ -18,7 +21,8 @@ class Input extends React.Component {
     this.refs.numInput.value = ''
   }
 
-  sendMessage (e) {
+  sendMessage (e)
+  {
     e.preventDefault()
     this.props.socket.send(JSON.stringify({
       type: p.MESSAGE_SERVER_MESSAGE,
@@ -28,20 +32,22 @@ class Input extends React.Component {
     this.refs.messageInput.value = ''
   }
 
-  chooseWinner (e) {
+  chooseWinner (e)
+  {
     e.preventDefault()
     let arr = this.props.bingos
     console.log(arr[Math.floor(Math.random() * arr.length)].nickname)
   }
 
-  render () {
+  render ()
+  {
     return (
       <div className="input">
         <form onSubmit={(e) => this.sendNumber(e)}>
           <label htmlFor="chat-input" className="row">Neue Zahl</label>
           <div className="row">
             <input autoComplete={'off'} ref="numInput" type="number" min="1" max="75" name="number" id="number"
-                   className="six columns"/>
+              className="six columns" />
             <button type="submit" className="six columns">Senden</button>
           </div>
         </form>
@@ -49,7 +55,7 @@ class Input extends React.Component {
           <label htmlFor="chat-input" className="row">Nachricht an alle</label>
           <div className="row">
             <input autoComplete={'off'} ref="messageInput" type="text" name="message" id="message"
-                   className="six columns"/>
+              className="six columns" />
             <button type="submit" className="six columns">Senden</button>
           </div>
         </form>

@@ -1,9 +1,9 @@
 import React from 'react'
 import Modal from 'react-modal'
-import { Tab, TabList, TabPanel, Tabs } from 'react-tabs'
+import {Tab, TabList, TabPanel, Tabs} from 'react-tabs'
 import validator from 'validator'
 
-import p from '../../../server/protocol'
+import p from '../protocol'
 import Board from './game/board'
 import Input from './info/input'
 import History from './info/history'
@@ -42,12 +42,15 @@ const bannedStyle = {
 
 Modal.setAppElement('#root')
 
-class App extends React.Component {
-  onSocketOpen () {
+class App extends React.Component
+{
+  onSocketOpen ()
+  {
     console.log('Connection established!')
   }
 
-  sendPacket (type, data) {
+  sendPacket (type, data)
+  {
     let msg = JSON.stringify({
       type: type,
       data: data
@@ -55,14 +58,16 @@ class App extends React.Component {
     this.socket.send(msg)
   }
 
-  onSocketData (message) {
+  onSocketData (message)
+  {
     let decoded = JSON.parse(message.data)
 
     /***
      * If the user is not yet authenticated the modal dialog is opened by default. This will ask for the username and
      * close afterward
      */
-    if (decoded.type === p.MESSAGE_WHO_ARE_YOU) {
+    if (decoded.type === p.MESSAGE_WHO_ARE_YOU)
+    {
       this.openModal('login')
       return
     }
@@ -70,20 +75,23 @@ class App extends React.Component {
     /***
      * If the game broadcasts a new message to the user it will be added to the log
      */
-    if (decoded.type === p.MESSAGE_NUMBER) {
+    if (decoded.type === p.MESSAGE_NUMBER)
+    {
       this.state.numberLog.push(decoded.data)
       this.forceUpdate()
       return
     }
 
-    if (decoded.type === p.MESSAGE_USER_BOARD) {
+    if (decoded.type === p.MESSAGE_USER_BOARD)
+    {
       let board = decoded.data.board
       this.setState({board: board})
       this.forceUpdate()
       return
     }
 
-    if (decoded.type === p.MESSAGE_SERVER_MESSAGE) {
+    if (decoded.type === p.MESSAGE_SERVER_MESSAGE)
+    {
       this.state.messageLog.push(decoded.data)
       this.forceUpdate()
       return
@@ -93,18 +101,21 @@ class App extends React.Component {
      * If the user joins the game he or she will receive the log in total enabling him or her to catch up on the
      * current game
      */
-    if (decoded.type === p.MESSAGE_HISTORY) {
+    if (decoded.type === p.MESSAGE_HISTORY)
+    {
       this.setState({numberLog: decoded.data})
       return
     }
 
-    if (decoded.type === p.MESSAGE_STATS) {
+    if (decoded.type === p.MESSAGE_STATS)
+    {
       this.setState({stats: decoded.data})
       this.forceUpdate()
       return
     }
 
-    if (decoded.type === p.MESSAGE_NICKNAME_GRANTED) {
+    if (decoded.type === p.MESSAGE_NICKNAME_GRANTED)
+    {
       this.closeModal()
       this.state.desiredNameValid = true
       this.state.loggedIn = true
@@ -112,7 +123,8 @@ class App extends React.Component {
       return
     }
 
-    if (decoded.type === p.MESSAGE_NICKNAME_INVALID) {
+    if (decoded.type === p.MESSAGE_NICKNAME_INVALID)
+    {
       this.state.lastNameDetail = decoded.data.message
       this.state.desiredNameValid = false
       this.state.requireLogin = false
@@ -120,7 +132,8 @@ class App extends React.Component {
       return
     }
 
-    if (decoded.type === p.MESSAGE_NICKNAME_VALID) {
+    if (decoded.type === p.MESSAGE_NICKNAME_VALID)
+    {
       this.state.lastNameDetail = ''
       this.state.desiredNameValid = true
       this.state.requireLogin = false
@@ -130,7 +143,8 @@ class App extends React.Component {
       return
     }
 
-    if (decoded.type === p.MESSAGE_AUTHENTICATE) {
+    if (decoded.type === p.MESSAGE_AUTHENTICATE)
+    {
       this.state.lastNameDetail = 'This nickname is reserved and requires login'
       this.state.desiredNameValid = true
       this.state.requireLogin = true
@@ -139,20 +153,25 @@ class App extends React.Component {
       return
     }
 
-    if (decoded.type === p.MESSAGE_AUTHENTICATED) {
+    if (decoded.type === p.MESSAGE_AUTHENTICATED)
+    {
       this.setState({role: decoded.data.role})
       return
     }
 
-    if (decoded.type === p.MESSAGE_USER_STATE_CHANGE) {
+    if (decoded.type === p.MESSAGE_USER_STATE_CHANGE)
+    {
       // let that = this
       this.state.userList
         .filter(u => u.id === decoded.data.id)
-        .map(u => {
-          if ('nickname' in decoded.data) {
+        .map(u =>
+        {
+          if ('nickname' in decoded.data)
+          {
             u.nickname = decoded.data.nickname
           }
-          if ('role' in decoded.data) {
+          if ('role' in decoded.data)
+          {
             u.role = decoded.data.role
           }
         })
@@ -160,25 +179,29 @@ class App extends React.Component {
       return
     }
 
-    if (decoded.type === p.MESSAGE_USER_JOINS) {
+    if (decoded.type === p.MESSAGE_USER_JOINS)
+    {
       this.state.userList.push(decoded.data)
       this.forceUpdate()
       return
     }
 
-    if (decoded.type === p.MESSAGE_SERVER_REJECT) {
+    if (decoded.type === p.MESSAGE_SERVER_REJECT)
+    {
       this.state.lastNameDetail = decoded.data.message
       this.openModal('error')
       this.forceUpdate()
       return
     }
 
-    if (decoded.type === p.MESSAGE_USER_LEAVES) {
+    if (decoded.type === p.MESSAGE_USER_LEAVES)
+    {
       let matches = this.state.userList.filter(
         u => u.id === decoded.data.id
       )
 
-      if (matches && matches.length === 1) {
+      if (matches && matches.length === 1)
+      {
         this.state.userList.splice(
           this.state.userList.indexOf(matches[0]),
           1)
@@ -186,37 +209,45 @@ class App extends React.Component {
       }
     }
 
-    if (decoded.type === p.MESSAGE_USER_LIST) {
+    if (decoded.type === p.MESSAGE_USER_LIST)
+    {
       this.setState({userList: decoded.data})
       return
     }
   }
 
-  onClick () {
-    if (this.state.desiredNameValid && !this.state.passwordRequired && !this.state.pending) {
+  onClick ()
+  {
+    if (this.state.desiredNameValid && !this.state.passwordRequired && !this.state.pending)
+    {
       this.sendPacket(p.MESSAGE_REQUEST_NICKNAME, {nickname: this.state.desiredName})
       this.state.pending = true
-    } else {
+    } else
+    {
       this.sendPacket(p.MESSAGE_AUTHENTICATE, {nickname: this.state.desiredName, password: this.state.password})
       this.state.pending = true
     }
   }
 
-  onSubmit (e) {
+  onSubmit (e)
+  {
     e.preventDefault()
     this.onClick()
   }
 
-  onChangeNickname (v) {
+  onChangeNickname (v)
+  {
     this.state.desiredName = validator.escape(v)
     this.sendPacket(p.MESSAGE_CHECK_NICKNAME, {nickname: v})
   }
 
-  onChangePassword (v) {
+  onChangePassword (v)
+  {
     this.state.password = v
   }
 
-  onSocketClose () {
+  onSocketClose ()
+  {
     let err = {
       id: 'SERVER_ERROR',
       timestamp: new Date().getTime(),
@@ -234,29 +265,36 @@ class App extends React.Component {
     // )
   }
 
-  openModal (modal) {
+  openModal (modal)
+  {
     let state = {}
-    if (modal === 'login') {
+    if (modal === 'login')
+    {
       state = {modalIsOpen: {login: true, error: false}}
     }
-    else if (modal === 'error') {
+    else if (modal === 'error')
+    {
       state = {modalIsOpen: {login: false, error: true}}
-    } else {
+    } else
+    {
       return
     }
     this.setState(state)
   }
 
-  afterOpenModal () {
+  afterOpenModal ()
+  {
     // references are now sync'd and can be accessed.
     // this.subtitle.style.color = '#f00'
   }
 
-  closeModal () {
+  closeModal ()
+  {
     this.setState({modalIsOpen: {login: false, error: false}})
   }
 
-  reset (e) {
+  reset (e)
+  {
     e.preventDefault()
     this.socket.send(JSON.stringify({
       type: p.MESSAGE_GAME_RESET,
@@ -265,7 +303,8 @@ class App extends React.Component {
     this.forceUpdate()
   }
 
-  constructor (props) {
+  constructor (props)
+  {
     super(props)
 
     this.state = {
@@ -291,14 +330,16 @@ class App extends React.Component {
     this.closeModal = this.closeModal.bind(this)
   }
 
-  componentDidMount () {
+  componentDidMount ()
+  {
     this.socket = new WebSocket('ws://' + window.location.hostname + ':8021')
     this.socket.onopen = () => this.onSocketOpen()
     this.socket.onmessage = (m) => this.onSocketData(m)
     this.socket.onclose = () => this.onSocketClose()
   }
 
-  render () {
+  render ()
+  {
     return (
       <div id="app">
         <header className="row">
@@ -360,7 +401,7 @@ class App extends React.Component {
                       freigeben
                     </li>
                     <li className="twelve columns">
-                      Sobald eine Zahl in der Historie auftaucht kann sie auf dem Spielfeld angeklickt werden
+                      Sobald eine Zahl in der Historie auftaucht, kann sie auf dem Spielfeld angeklickt werden
                     </li>
                     <li className="twelve columns">
                       Jede Zahl kann nur für 2 Stunden geklickt werden, damit später eintreffende Spieler keinen
@@ -386,27 +427,27 @@ class App extends React.Component {
                 </div>
               </TabPanel>}
               {this.state.role === 'admin' ? <TabPanel>
-                  <Input
-                    socket={this.socket}
-                    bingos={this.state.stats.bingosPlayers}
-                  />
-                </TabPanel>
+                <Input
+                  socket={this.socket}
+                  bingos={this.state.stats.bingosPlayers}
+                />
+              </TabPanel>
                 : []}
               {this.state.role === 'admin' ? <TabPanel>
-                  <button type="submit" className="danger" onClick={(e) => this.reset(e)}>Zurücksetzen</button>
-                </TabPanel>
+                <button type="submit" className="danger" onClick={(e) => this.reset(e)}>Zurücksetzen</button>
+              </TabPanel>
                 : []}
             </Tabs>
             <a href="https://github.com/tlahmann/bingo-dingo" target='_blank' className="u-pull-left"
-               aria-label="Fork tlahmann/bingo-dingo on GitHub">
+              aria-label="Fork tlahmann/bingo-dingo on GitHub">
               <img height='36' style={{border: '0px', height: '36px'}}
-                   src='./github_fork.png'
-                   border='0' alt='Fork this Project on GitHub' />
+                src='./github_fork.png'
+                border='0' alt='Fork this Project on GitHub' />
             </a>
             <a href='https://ko-fi.com/E1E5C1W2' target='_blank' className="u-pull-right">
               <img height='36' style={{border: '0px', height: '36px'}}
-                   src='https://az743702.vo.msecnd.net/cdn/kofi5.png?v=0'
-                   border='0' alt='Buy Me a Coffee at ko-fi.com' />
+                src='https://az743702.vo.msecnd.net/cdn/kofi5.png?v=0'
+                border='0' alt='Buy Me a Coffee at ko-fi.com' />
             </a>
           </div>
         </div>
@@ -421,25 +462,25 @@ class App extends React.Component {
             <div className="row">
               <label htmlFor="nickname" className="two columns">Name: </label>
               <input autoComplete={'off'} onChange={v => this.onChangeNickname(v.target.value)}
-                     type="text"
-                     name="nickname"
-                     id="nickname"
-                     className="ten columns" />
+                type="text"
+                name="nickname"
+                id="nickname"
+                className="ten columns" />
             </div>
             {
               this.state.requireLogin ? <div className="row">
                 <label htmlFor="password" className="two columns">Passwort: </label>
                 <input autoComplete={'off'} onChange={v => this.onChangePassword(v.target.value)}
-                       type="password"
-                       name="password"
-                       id="password"
-                       className="ten columns" />
+                  type="password"
+                  name="password"
+                  id="password"
+                  className="ten columns" />
               </div> : []
             }
             <div className="row">
               <strong className="eight columns">{this.state.lastNameDetail}</strong>
               <button onClick={() => this.onClick()} className="login-btn four columns u-pull-right"
-                      disabled={!this.state.desiredNameValid && !this.state.passwordRequired}>
+                disabled={!this.state.desiredNameValid && !this.state.passwordRequired}>
                 Login
               </button>
             </div>

@@ -1,29 +1,26 @@
 'use strict'
 
-import 'babel-polyfill'
-import validator from 'validator'
-import dateFormat from 'dateformat'
+import 'ts-polyfill'
+import * as validator from 'validator'
 
-export default class HelperFunctions {
-  constructor () {
-    this.lines = [
-      // Horizontally
-      [0, 1, 2, 3, 4],
-      [5, 6, 7, 8, 9],
-      [10, 11, 12, 13, 14],
-      [15, 16, 17, 18, 19],
-      [20, 21, 22, 23, 24],
-      // Vertically
-      [0, 5, 10, 15, 20],
-      [1, 6, 11, 16, 21],
-      [2, 7, 12, 17, 22],
-      [3, 8, 13, 18, 23],
-      [4, 9, 14, 19, 24],
-      // Diagonal
-      [0, 6, 12, 18, 24],
-      [4, 8, 12, 16, 20]
-    ]
-  }
+export abstract class HelperFunctions {
+  static lines = [
+    // Horizontally
+    [0, 1, 2, 3, 4],
+    [5, 6, 7, 8, 9],
+    [10, 11, 12, 13, 14],
+    [15, 16, 17, 18, 19],
+    [20, 21, 22, 23, 24],
+    // Vertically
+    [0, 5, 10, 15, 20],
+    [1, 6, 11, 16, 21],
+    [2, 7, 12, 17, 22],
+    [3, 8, 13, 18, 23],
+    [4, 9, 14, 19, 24],
+    // Diagonal
+    [0, 6, 12, 18, 24],
+    [4, 8, 12, 16, 20]
+  ]
 
   /**
    * Replace <, >, &, ', " and / with HTML entities.
@@ -32,7 +29,7 @@ export default class HelperFunctions {
    * @param input
    * @returns {*}
    */
-  static sanitize (input) {
+  static sanitize(input) {
     input = input + ''
     return validator.escape(input)
   }
@@ -42,11 +39,11 @@ export default class HelperFunctions {
    * @param s
    * @returns {*}
    */
-  static filterUserInput (s) {
+  static filterUserInput(s) {
     return s
   }
 
-  static getRandomGameBoard () {
+  static getRandomGameBoard(): [{ number: number, isClicked: boolean }] {
     // Fill array with numbers from 1-75
     let arr = []
     for (let j = 0; j < 5; ++j) {
@@ -62,7 +59,7 @@ export default class HelperFunctions {
     }
 
     arr[2][2] = {
-      number: 'FREI',
+      number: -1,
       isClicked: true
     }
 
@@ -70,7 +67,7 @@ export default class HelperFunctions {
     return [].concat.apply([], HelperFunctions.transpose(arr))
   }
 
-  static shuffle (array) {
+  static shuffle(array) {
     let tmp, current, top = array.length
     if (top) while (--top) {
       current = Math.floor(Math.random() * (top + 1))
@@ -81,7 +78,7 @@ export default class HelperFunctions {
     return array
   }
 
-  static transpose (a) {
+  static transpose(a) {
     // Calculate the width and height of the Array
     let w = a.length || 0
     let h = a[0] instanceof Array ? a[0].length : 0
@@ -110,27 +107,11 @@ export default class HelperFunctions {
     return t
   }
 
-  static getLines () {
-    return [
-      // Horizontally
-      [0, 1, 2, 3, 4],
-      [5, 6, 7, 8, 9],
-      [10, 11, 12, 13, 14],
-      [15, 16, 17, 18, 19],
-      [20, 21, 22, 23, 24],
-      // Vertically
-      [0, 5, 10, 15, 20],
-      [1, 6, 11, 16, 21],
-      [2, 7, 12, 17, 22],
-      [3, 8, 13, 18, 23],
-      [4, 9, 14, 19, 24],
-      // Diagonal
-      [0, 6, 12, 18, 24],
-      [4, 8, 12, 16, 20]
-    ]
+  static getLines(): number[][] {
+    return HelperFunctions.lines
   }
 
-  static calculateWinner (board, lines) {
+  static calculateWinner(board, lines) {
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c, d, e] = lines[i]
       if (board[a].isClicked && board[b].isClicked && board[c].isClicked && board[d].isClicked && board[e].isClicked) {
@@ -140,7 +121,7 @@ export default class HelperFunctions {
     return lines
   }
 
-  static clearLines (squares, lines) {
+  static clearLines(squares, lines) {
     return lines.map(line => {
       const [a, b, c, d, e] = line
       if (!(squares[a].isClicked && squares[b].isClicked && squares[c].isClicked && squares[d].isClicked && squares[e].isClicked)) {
@@ -149,7 +130,7 @@ export default class HelperFunctions {
     }).filter(element => element !== undefined)
   }
 
-  static countBingos (squares, lines) {
+  static countBingos(squares, lines) {
     return lines.map(line => {
       const [a, b, c, d, e] = line
       if (squares[a].isClicked && squares[b].isClicked && squares[c].isClicked && squares[d].isClicked && squares[e].isClicked) {
@@ -160,17 +141,17 @@ export default class HelperFunctions {
     }).reduce((s, b) => s + b, 0)
   }
 
-  static countMissing (squares, lines, length) {
+  static countMissing(squares, lines, length) {
     return lines.map(l => {
       for (let subset of this.subsets(l)) {
         if (subset.length === length) {
-          if (subset.every(i => squares[i].isClicked)) {return 1}
+          if (subset.every(i => squares[i].isClicked)) { return 1 }
         }
       }
     }).reduce((s, b) => s + (b || 0), 0)
   }
 
-  static getMissing (squares, lines, length = 4) {
+  static getMissing(squares, lines, length = 4) {
     // go through all possible lines
     return lines.map(l => {
       for (let subset of this.subsets(l)) {
@@ -187,11 +168,11 @@ export default class HelperFunctions {
     })
   }
 
-  static formatDate (date) {
-    return dateFormat(date, 'isoDateTime')
+  public static formatDate(date: Date): String {
+    return date.toISOString()
   }
 
-  static* subsets (array, offset = 0) {
+  static * subsets(array, offset = 0) {
     while (offset < array.length) {
       let first = array[offset++]
       for (let subset of this.subsets(array, offset)) {
@@ -202,7 +183,7 @@ export default class HelperFunctions {
     yield []
   }
 
-  static findCommon (arr, nums) {
+  static findCommon(arr, nums) {
     if (arr.length === 0) {
       return -1
     }
@@ -221,5 +202,3 @@ export default class HelperFunctions {
     return maxIndex
   }
 }
-
-module.exports = HelperFunctions

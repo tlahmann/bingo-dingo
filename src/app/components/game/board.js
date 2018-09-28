@@ -2,20 +2,24 @@ import React from 'react'
 import './board.scss'
 import Square from './square'
 
-import p from '../../../../server/protocol'
+import p from '../../protocol'
 
-class Board extends React.Component {
-  constructor (props) {
+class Board extends React.Component
+{
+  constructor (props)
+  {
     super(props)
   }
 
-  handleClick (i) {
+  handleClick (i)
+  {
     const isClicked = this.props.board[i].isClicked
     // If already clicked return
 
     if (isClicked || !this.props.numberLog
-      .filter(n => (new Date).getTime() - n.timestamp < 2 * 60 * 60 * 1000)
-      .some(x => parseInt(x.number) === this.props.board[i].number)) {
+      .filter(n => (new Date()).getTime() - n.timestamp < 2 * 60 * 60 * 1000)
+      .some(x => parseInt(x.number) === this.props.board[i].number))
+    {
       return
     }
 
@@ -29,7 +33,8 @@ class Board extends React.Component {
     this.forceUpdate()
   }
 
-  renderSquare (i) {
+  renderSquare (i)
+  {
     return (
       <Square
         value={this.props.board[i]}
@@ -39,26 +44,30 @@ class Board extends React.Component {
     )
   }
 
-  renderRow (row) {
+  renderRow (row)
+  {
     let columns = []
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 5; i++)
+    {
       columns.push(this.renderSquare(i + row * 5))
     }
-    return <div className="board-row" key={row}>{columns}</div>
+    return <div className='board-row' key={row}>{columns}</div>
   }
 
-  render () {
+  render ()
+  {
     let rows = []
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 5; i++)
+    {
       rows.push(this.renderRow(i))
     }
     return (<div>
-      <div className="board-row" key="header">
-        <div className="header-square">B</div>
-        <div className="header-square">I</div>
-        <div className="header-square">N</div>
-        <div className="header-square">G</div>
-        <div className="header-square">O</div>
+      <div className='board-row' key='header'>
+        <div className='header-square'>B</div>
+        <div className='header-square'>I</div>
+        <div className='header-square'>N</div>
+        <div className='header-square'>G</div>
+        <div className='header-square'>O</div>
       </div>
       {rows}
     </div>)

@@ -1,4 +1,4 @@
-module.exports = [
+let pfui = [
   'arsch',
   'bimbo',
   'bratze',
@@ -60,3 +60,5 @@ module.exports = [
   'wichsen',
   'wichser'
 ]
+
+export default pfui

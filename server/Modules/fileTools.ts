@@ -1,20 +1,19 @@
 'use strict'
 
 // fileTools.js
-import fs from 'fs'
-import readLine from 'readline'
-import Stream from 'stream'
+import * as fs from 'fs'
+import * as readLine from 'readline'
+import * as Stream from 'stream'
 
-exports.getLastLine = (fileName, minLength) => {
+export function getLastLine(fileName: fs.PathLike, minLength: number): Promise<String> {
   let inStream = fs.createReadStream(fileName)
-  let outStream = new Stream
   return new Promise((resolve, reject) => {
-    let rl = readLine.createInterface(inStream, outStream)
+    let rl = readLine.createInterface(inStream)
 
-    let lastLine = ''
+    let lastLine: String = ''
     rl.on('line', function (line) {
       if (line.length >= minLength) {
-        lastLine = line
+        lastLine = String(line)
       }
     })
 
@@ -26,9 +25,9 @@ exports.getLastLine = (fileName, minLength) => {
   })
 }
 
-exports.appendLine = (fileName, data) => {
+export function appendLine(fileName, data) {
   fs.appendFile(fileName, '\n' + data, 'utf8', function (err) {
     if (err) throw err
-    console.log('Saved!')
+    console.log('Not Saved!')
   })
 }
